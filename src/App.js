@@ -2,10 +2,44 @@ import React, { Component } from 'react';
 import './App.css';
 import { withRouter } from 'react-router-dom';
 import Routes from './routes';
-import firebase from './config/firebase';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { blue } from '@material-ui/core/colors';
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps";
 
 import AppBar from './components/AppBar/AppBar';
+
+//Creating Theme
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#FE6B8B',
+      contrastText: '#fff'
+    },
+    secondary: {
+      main: '#555',
+      contrastText: '#fff'
+    },
+  },
+  typography: {
+    useNextVariants: true,
+  },
+  overrides: {
+    // Name of the component ⚛️ / style sheet
+    MuiButton: {
+      // Name of the rule
+      root: {
+        // Some CSS
+        background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+        borderRadius: 0,
+        border: 0,
+        color: 'white',
+        height: 48,
+        padding: '0 30px',
+        boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+      },
+    },
+  },
+})
 
 const MyMapComponent = withScriptjs(withGoogleMap((props) =>
   <GoogleMap
@@ -14,12 +48,12 @@ const MyMapComponent = withScriptjs(withGoogleMap((props) =>
   >
     {
       props.isMarkerShown
-      && 
-      <Marker 
-        position={{ lat: props.coords.latitude, lng: props.coords.longitude }} 
+      &&
+      <Marker
+        position={{ lat: props.coords.latitude, lng: props.coords.longitude }}
         draggable={true}
         onDragEnd={position => {
-            props.updateCoords({latitude: position.latLng.lat(), longitude: position.latLng.lng()})
+          props.updateCoords({ latitude: position.latLng.lat(), longitude: position.latLng.lng() })
         }}
       />
     }
@@ -34,16 +68,6 @@ class App extends Component {
       coords: null,
       displayName: ''
     }
-  }
-
-  handleLogin = () => {
-    var provider = new firebase.auth.FacebookAuthProvider();
-    firebase.auth().signInWithPopup(provider).then(result => {
-      this.props.history.push('/profile/nickNameAndPhone', { 
-        displayName: result.user.displayName,
-      });
-    })
-    .catch(err => console.log(err));
   }
 
   componentDidMount() {
@@ -64,15 +88,13 @@ class App extends Component {
 
   render() {
     const {
-      coords,
-      displayName
+      coords
     } = this.state;
-    
+
     return (
-      <div>
-        <Routes />
+      <MuiThemeProvider  theme={theme}>
         <AppBar />
-        <button onClick={ this.handleLogin }>Facebook Login</button>
+        <Routes />
         {/* {
           coords
           &&
@@ -86,7 +108,7 @@ class App extends Component {
             mapElement={<div style={{ height: `100%` }} />}
           />
         } */}
-      </div>
+      </MuiThemeProvider>
     );
   }
 }
