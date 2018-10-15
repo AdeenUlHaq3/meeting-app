@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import './App.css';
+import { withRouter } from 'react-router-dom';
+import Routes from './routes';
 import firebase from './config/firebase';
-import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
+import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps";
+
+import AppBar from './components/AppBar/AppBar';
 
 const MyMapComponent = withScriptjs(withGoogleMap((props) =>
   <GoogleMap
@@ -27,17 +31,19 @@ class App extends Component {
     super();
 
     this.state = {
-      coords: null
+      coords: null,
+      displayName: ''
     }
   }
 
   handleLogin = () => {
     var provider = new firebase.auth.FacebookAuthProvider();
-    firebase.auth().signInWithPopup(provider).then(function (result) {
-
-    }).catch(function (error) {
-
-    });
+    firebase.auth().signInWithPopup(provider).then(result => {
+      this.props.history.push('/profile/nickNameAndPhone', { 
+        displayName: result.user.displayName,
+      });
+    })
+    .catch(err => console.log(err));
   }
 
   componentDidMount() {
@@ -58,13 +64,16 @@ class App extends Component {
 
   render() {
     const {
-      coords
+      coords,
+      displayName
     } = this.state;
-
+    
     return (
       <div>
-        {/* <button onClick={ this.handleLogin }>Facebook Login</button> */}
-        {
+        <Routes />
+        <AppBar />
+        <button onClick={ this.handleLogin }>Facebook Login</button>
+        {/* {
           coords
           &&
           <MyMapComponent
@@ -76,10 +85,10 @@ class App extends Component {
             containerElement={<div style={{ height: `400px` }} />}
             mapElement={<div style={{ height: `100%` }} />}
           />
-        }
+        } */}
       </div>
     );
   }
 }
 
-export default App;
+export default withRouter(App);
