@@ -83,7 +83,7 @@ class NickNameAndPhone extends React.Component {
                     className={classes.textField}
                     onChange={this.handleChange}
                     value={phoneNo}
-                    validators={['matchRegexp:[0]{1}', 'required']}
+                    validators={['matchRegexp:[0]{1}[3]{1}[0-9]{2}[-]{1}[0-9]{7}', 'required']}
                     errorMessages={['Type Mismatch']}
                     margin='normal'
                 />
