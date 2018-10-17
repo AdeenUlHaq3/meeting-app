@@ -169,7 +169,7 @@ class PrimaryAppBar extends React.Component {
         <AppBar position="static">
           <Toolbar>
           <Typography className={classes.title} variant="subheading" color="inherit" noWrap>
-              Material-UI
+              MeetingApp
             </Typography>
             <div className={classes.search}>
               <div className={classes.searchIcon}>

@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core/styles'; 
 import firebase from '../../config/firebase';
 
 function handleLogin(history) {
@@ -12,6 +13,12 @@ function handleLogin(history) {
     .catch(err => console.log(err));
 };
 
-const Login = (props) => <Button onClick={() => handleLogin(props.history)}>Login With Facebook</Button>
+const styles = theme => ({
+  button: {
+    margin: theme.spacing.unit * 3,
+  },
+});
 
-export default Login;
+const Login = (props) => <Button className={props.classes.button} onClick={() => handleLogin(props.history)}>Login With Facebook</Button>
+
+export default withStyles(styles)(Login);

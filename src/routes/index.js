@@ -1,13 +1,20 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
+import Login from '../screens/Login/Login';
 import NickNameAndPhone from '../screens/Profile/NickNameAndPhone/NickNameAndPhone';
 import ChooseImages from '../screens/ChooseImages/ChooseImages'; 
-import Login from '../screens/Login/Login';
+import BeveragesAndMeetingDuration from '../screens/BeveragesAndMeetingDuration/BeveragesAndMeetingDuration';
+import SelectLocation from '../screens/SelectLocation/SelectLocation';
+import DashBoard from '../screens/DashBoard/DashBoard';
 
 export default () =>  (
     <Switch>
         <Route exact path='/' component={ Login } />
         <Route path='/profile/nickNameAndPhone' component={ NickNameAndPhone } />
         <Route path='/profile/chooseImages' component={ ChooseImages } />
+        <Route path='/profile/beveragesAndMeetingDuration' component={ BeveragesAndMeetingDuration } />
+        <Route path='/profile/selectLocation' component={ SelectLocation } />
+        <Route path='/dashboard' component={ DashBoard } />
+
     </Switch>
 );
