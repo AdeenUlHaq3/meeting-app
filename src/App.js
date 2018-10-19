@@ -3,7 +3,6 @@ import './App.css';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
 
-import AppBar from './components/AppBar/AppBar';
 import Routes from './routes';
 
 //Creating Theme
@@ -40,10 +39,13 @@ const theme = createMuiTheme({
 })
 
 class App extends Component {
+  state = {
+    isUser: false
+  }
+
   render() {
     return (
-      <MuiThemeProvider  theme={theme}>
-        <AppBar />
+      <MuiThemeProvider theme={theme}>
         <Routes />
       </MuiThemeProvider>
     );

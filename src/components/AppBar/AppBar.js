@@ -7,7 +7,7 @@ import InputBase from '@material-ui/core/InputBase';
 import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import Typography from '@material-ui/core/Typography';
+import { Typography } from '@material-ui/core';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import { withStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
@@ -168,7 +168,7 @@ class PrimaryAppBar extends React.Component {
       <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
-          <Typography className={classes.title} variant="subheading" color="inherit" noWrap>
+            <Typography className={classes.title} variant="subheading" color="inherit" noWrap>
               MeetingApp
             </Typography>
             <div className={classes.search}>
