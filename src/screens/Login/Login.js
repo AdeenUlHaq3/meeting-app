@@ -6,6 +6,8 @@ import firebase from '../../config/firebase';
 function handleLogin(history) {
     var provider = new firebase.auth.FacebookAuthProvider();
     firebase.auth().signInWithPopup(provider).then(result => {
+        console.log(result);
+        
         history.push('/profile/nickNameAndPhone', {
             displayName: result.user.displayName,
         });

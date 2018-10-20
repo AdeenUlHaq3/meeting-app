@@ -1,9 +1,17 @@
 import React from 'react';
 
 class DashBoard extends React.Component {
+    
+    redirectToRecommendedPeoples = () => {
+        this.props.history.push('/recommendedPeoples');
+    }
+
     render() {
         return(
-            <h1>Welcome to DashBoard</h1>
+            <div>
+                <h1>No meetings yet.</h1>
+                <button onClick={this.redirectToRecommendedPeoples}>See recommended peoples</button>
+            </div>
         );
     };
 };
