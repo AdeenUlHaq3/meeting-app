@@ -43,10 +43,20 @@ class App extends Component {
     isUser: false
   }
 
+  activeUser = () => {
+    this.setState({
+      isUser: true
+    })
+  }
+
   render() {
+    const {
+      isUser
+    } = this.state;
+
     return (
       <MuiThemeProvider theme={theme}>
-        <Routes />
+        <Routes Routes={{isUser, activeUser: this.activeUser}} />
       </MuiThemeProvider>
     );
   }

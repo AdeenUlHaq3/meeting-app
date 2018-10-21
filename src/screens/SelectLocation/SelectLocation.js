@@ -48,9 +48,9 @@ class SelectLocation extends React.Component {
 
     handleSubmit = e => {
         e.preventDefault();
-        const userId = firebase.auth().currentUser.uid;
-
-        firebase.database().ref(`Users/${userId}`)
+        const myUId = firebase.auth().currentUser.uid;
+        
+        firebase.database().ref(`Users/${myUId}`)
         .set(
             {...this.props.location.state, ...this.state.coords}
         )

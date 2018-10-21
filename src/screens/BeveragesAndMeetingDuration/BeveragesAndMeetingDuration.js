@@ -94,13 +94,13 @@ class BeveragesAndMeetingDuration extends React.Component {
           <FormGroup>
             <FormControlLabel
               control={
-                <Checkbox name='twentyMin' checked={twentyMin[0]} onChange={(e) => this.handleChange(e, 'duration')} value="twentyMin" />
+                <Checkbox name='twentyMin' checked={twentyMin[0]} onChange={(e) => this.handleChange(e, 'duration')} value={20} />
               }
               label="TwentyMin"
             />
             <FormControlLabel
               control={
-                <Checkbox name='sixtyMin' checked={sixtyMin[0]} onChange={(e) => this.handleChange(e, 'duration')} value="sixtyMin" />
+                <Checkbox name='sixtyMin' checked={sixtyMin[0]} onChange={(e) => this.handleChange(e, 'duration')} value={60} />
               }
               label="SixtyMin"
             />
@@ -110,7 +110,7 @@ class BeveragesAndMeetingDuration extends React.Component {
                   name='oneTwentyMin'
                   checked={oneTwentyMin[0]}
                   onChange={(e) => this.handleChange(e, 'duration')}
-                  value="oneTwentyMin"
+                  value={120}
                 />
               }
               label="oneTwentyMin"
