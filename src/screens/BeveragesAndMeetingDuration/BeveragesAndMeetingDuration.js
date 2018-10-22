@@ -43,7 +43,7 @@ class BeveragesAndMeetingDuration extends React.Component {
         else if(this.state[prop][2] === 'drink')
           drinks.push(this.state[prop][1]);
         else
-          duration.push(this.state[prop][1]);
+          duration.push(parseInt(this.state[prop][1]));
       };
     };
     
@@ -56,7 +56,7 @@ class BeveragesAndMeetingDuration extends React.Component {
     const { coffee, juice, cocktail, twentyMin, sixtyMin, oneTwentyMin } = this.state;
     const drinkError = Object.values(this.state).filter(v => v[2] === 'drink' && v[0]).length <= 0;
     const durationError = Object.values(this.state).filter(v => v[2] === 'duration' && v[0]).length <= 0;
-
+    
     return (
       <form onSubmit={this.handleNext}>
       <Grid container>
@@ -94,13 +94,13 @@ class BeveragesAndMeetingDuration extends React.Component {
           <FormGroup>
             <FormControlLabel
               control={
-                <Checkbox name='twentyMin' checked={twentyMin[0]} onChange={(e) => this.handleChange(e, 'duration')} value={20} />
+                <Checkbox name='twentyMin' checked={twentyMin[0]} onChange={(e) => this.handleChange(e, 'duration')} value='20' />
               }
               label="TwentyMin"
             />
             <FormControlLabel
               control={
-                <Checkbox name='sixtyMin' checked={sixtyMin[0]} onChange={(e) => this.handleChange(e, 'duration')} value={60} />
+                <Checkbox name='sixtyMin' checked={sixtyMin[0]} onChange={(e) => this.handleChange(e, 'duration')} value='60' />
               }
               label="SixtyMin"
             />
@@ -110,7 +110,7 @@ class BeveragesAndMeetingDuration extends React.Component {
                   name='oneTwentyMin'
                   checked={oneTwentyMin[0]}
                   onChange={(e) => this.handleChange(e, 'duration')}
-                  value={120}
+                  value='120'
                 />
               }
               label="oneTwentyMin"
