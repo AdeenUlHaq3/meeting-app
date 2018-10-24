@@ -48,7 +48,7 @@ class BeveragesAndMeetingDuration extends React.Component {
     };
     
     if(drinks.length && duration.length)
-        this.props.history.push('/profile/selectLocation', {...state, ...{drinks, duration}});
+        this.props.history.push('/profile/selectLocation', {...state, drinks, duration});
   }
 
   render() {

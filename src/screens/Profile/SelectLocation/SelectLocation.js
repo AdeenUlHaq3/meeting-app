@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps";
-import firebase from '../../config/firebase';
+import firebase from '../../../config/firebase';
 
 const MyMapComponent = withScriptjs(withGoogleMap((props) =>
     <GoogleMap

@@ -26,7 +26,9 @@ function handleLogin(history, activeUser) {
 
 const styles = {
     button: {
-        float: 'right'
+        position: 'absolute',
+        right: '20px',
+        float: 'right !important',
     },
 };
 

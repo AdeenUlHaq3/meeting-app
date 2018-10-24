@@ -3,12 +3,27 @@ import Cards, { Card as CardForSwipe } from 'react-swipe-deck';
 import firebase from '../../config/firebase';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
-import { width } from 'window-size';
+import Grid from '@material-ui/core/Grid';
+import GeoFire from 'geofire';
+import { withStyles } from '@material-ui/core/styles';
+
+import ConfirmationDialog from '../../screens/RecommendedPeoples/components/dialogs/ConfirmationDialog/ConfirmationDialog';
+import VenueDetailsDialog from '../../screens/RecommendedPeoples/components/dialogs/VenueDetailsDialog/VenueDetailsDialog';
+
+const styles = {
+    button: {
+        background: 'transparent',
+        color: '#FE6B8B',
+        boxShadow: 'none'
+    },
+};
 
 class Card extends React.Component {
 
     state = {
-        recommendedUsers: []
+        recommendedUsers: [],
+        isConfirmDialog: true,
+        isVenueDetailsDialog: false
     }
 
     componentDidMount() {
@@ -17,23 +32,35 @@ class Card extends React.Component {
 
         firebase.database().ref(`Users/${myUId}`)
             .once('value', me => {
-                const myDrinks = me.val().drinks;
-                const myTimes = me.val().duration;
+                const myObj = me.val();
+                const myDrinks = myObj.drinks;
+                const myTimes = myObj.duration;
+                const myLat = myObj.latitude;
+                const myLng = myObj.longitude;
 
                 firebase.database().ref(`Users`)
                     .once('value', restUsers => {
-
                         restUsers.forEach(user => {
-                            const userDrinks = user.val().drinks;
-                            const userTimes = user.val().duration;
+                            const userObj = user.val();
+                            const userDrinks = userObj.drinks;
+                            const userTimes = userObj.duration;
+                            const userLat = userObj.latitude;
+                            const userLng = userObj.longitude;
 
+                            //If mine response
                             if (me.key === user.key)
                                 return;
 
+                            //Drinks Check
                             if (myDrinks.some(drink => userDrinks.includes(drink))) {
-                                if (!myTimes.some(time => userTimes <= time)) {
+                                //Duration Check
+                                if (myTimes.some(time => userTimes <= time)) {
                                     return;
                                 }
+                                //Distance Check <= 5KM
+                                if(GeoFire.distance([myLat, myLng], [userLat, userLng]) > 5)
+                                    return;
+
                                 const {
                                     recommendedUsers
                                 } = this.state;
@@ -51,50 +78,97 @@ class Card extends React.Component {
             });
     }
 
-    action = () => {
+    confirm = (index) => {
+        this.setState({
+            isConfirmDialog: true,
+            userIndexForMeeting: index
+        })
+    }
+
+    closeConfirmDialog = (bool) => {
+        this.setState({
+            isConfirmDialog: false,
+            isVenueDetailsDialog: bool
+        })
+    }
+
+    closeVenueDetailsDialog = () => {
+        this.setState({
+            isVenueDetailsDialog: false
+        })
+    }
+
+    sendRequestForMeeting = () => {
 
     }
 
     render() {
         const {
-            recommendedUsers
+            recommendedUsers,
+            isConfirmDialog,
+            isVenueDetailsDialog,
         } = this.state;
-        // console.log(recommendedUsers[0].nickName);
-        // const nickName = recommendedUsers[0];
-        // console.log(nickName);
 
+        const {
+            classes
+        } = this.props;
 
-
-        const data = ['Alexandre', 'Thomas', 'Lucien'];
         return (
             <div>
-                <div style={{ width: '300px', height: '100px' }}>
-                    <Carousel 
-                        autoPlay={true} 
-                        infiniteLoop={true} 
-                        emulateTouch={true} 
-                        swipeable={true} 
-                        showArrows={false} 
-                        showThumbs={false}
-                    >
-                        <img src={require('../../Assets/Images/logo.png')} alt='' />
-                        <img src={require('../../Assets/Images/logo.png')} alt='' />
-                        <img src={require('../../Assets/Images/logo.png')} alt='' />
-                    </Carousel>
-                </div>
-                {/* <Cards alertRight={this.action} onEnd={this.action} className='master-root'>
-                    {data.map(item =>
-                        <CardForSwipe
-                            key={item}
-                            onSwipeLeft={this.action}
-                            onSwipeRight={this.action}>
-                            <h2>{item}</h2>
-                        </CardForSwipe>
-                    )}
-                </Cards> */}
+                <ConfirmationDialog 
+                    ConfirmationDialog={{
+                        classes, 
+                        isConfirmDialog, 
+                        closeConfirmDialog: this.closeConfirmDialog
+                    }} 
+                />
+                <VenueDetailsDialog
+                    VenueDetailsDialog={{
+                        classes, 
+                        isVenueDetailsDialog, 
+                        closeVenueDetailsDialog: this.closeVenueDetailsDialog,
+                        sendRequestForMeeting: this.sendRequestForMeeting
+                    }}
+                />
+                {
+                    recommendedUsers.length !== 0 &&
+                    <Grid container>
+                    <Grid item lg={12}>
+                    <Cards onEnd={this.action} className='master-root'>
+                        {
+                            recommendedUsers.map((recommendedUser, index) =>
+                                <CardForSwipe
+                                    key={recommendedUser.nickName}
+                                    onSwipeLeft={this.action}
+                                    onSwipeRight={() => this.confirm(index)}>
+                                    <Grid container>
+                                        <Grid item lg={12}>
+                                            <Carousel
+                                                autoPlay={true}
+                                                infiniteLoop={true}
+                                                emulateTouch={true}
+                                                swipeable={true}
+                                                showArrows={false}
+                                                showThumbs={false}
+                                            >
+                                                {
+                                                    recommendedUser.images.map(image => <img key={image} src={image} alt='' />)
+                                                }
+                                            </Carousel>
+                                        </Grid>
+                                        <Grid item lg={12}>{recommendedUser.displayName}</Grid>
+                                        <Grid item lg={12}>{recommendedUser.nickName}</Grid>
+                                    </Grid>
+                                </CardForSwipe>
+                            )
+                        }
+                    </Cards>
+                    </Grid>
+                    </Grid>
+                }
             </div>
         );
     };
 };
 
-export default Card;
+export default withStyles(styles)(Card);

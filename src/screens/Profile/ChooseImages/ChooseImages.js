@@ -1,5 +1,5 @@
 import React from 'react';
-import firebase from '../../config/firebase';
+import firebase from '../../../config/firebase';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -13,7 +13,7 @@ const styles = theme => ({
         textAlign: 'center',
     },
     imagePlaceholder: {
-        margin: theme.spacing.unit*2
+        margin: theme.spacing.unit * 2
     }
 })
 
@@ -22,6 +22,7 @@ class ChooseImages extends React.Component {
         super();
 
         this.state = {
+            images: [],
             image1URL: '',
             image2URL: '',
             image3URL: ''
@@ -30,23 +31,17 @@ class ChooseImages extends React.Component {
 
     componentDidUpdate() {
         const {
-            image1URL,
-            image2URL,
-            image3URL
+            images
         } = this.state;
-        
-        const {
-            nickName,
-            phoneNo
-        } = this.props.location.state;
 
-        if(image1URL && image2URL && image3URL)
+        const {
+            state
+        } = this.props.location;
+
+        if (images.length === 3)
             this.props.history.push('/profile/beveragesAndMeetingDuration', {
-                nickName,
-                phoneNo,
-                image1URL,
-                image2URL,
-                image3URL
+                ...state,
+                images
             });
     };
 
@@ -66,17 +61,22 @@ class ChooseImages extends React.Component {
 
         var storage = firebase.storage();
         const files = [imageOne, imageTwo, imageThree];
-        
-        files.map((file, index) => {
-            return storage.ref(`images/${file.name}`).put(file)
-        .then(snapshot => {
-            return snapshot.ref.getDownloadURL();   // Will return a promise with the download link
-        })
-        .then(downloadURL => {
-            this.setState({
-                [`image${index+1}URL`]: downloadURL
-            })   
-        })
+
+        files.map(file => {
+            return storage.ref(`images/${new Date().getTime()}`).put(file)
+                .then(snapshot => {
+                    return snapshot.ref.getDownloadURL();   // Will return a promise with the download link
+                })
+                .then(downloadURL => {
+                    const {
+                        images
+                    } = this.state;
+
+                    images.push(downloadURL);
+                    this.setState({
+                        images
+                    });
+                });
         })
     };
 
@@ -84,7 +84,7 @@ class ChooseImages extends React.Component {
         const {
             classes
         } = this.props;
-        
+
         return (
             <form className={classes.form} onSubmit={this.handleSubmit}>
                 <Grid container>

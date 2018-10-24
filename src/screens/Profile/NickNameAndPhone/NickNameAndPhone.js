@@ -47,7 +47,13 @@ class NickNameAndPhone extends React.Component {
             phoneNo
         } = this.state;
 
-        this.props.history.push('/profile/chooseImages', {nickName, phoneNo});
+        const {
+            state
+        } = this.props.location;
+        console.log(state);
+        
+
+        this.props.history.push('/profile/chooseImages', {...state, nickName, phoneNo});
     };
 
     render() {

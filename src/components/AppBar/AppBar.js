@@ -16,6 +16,7 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 
 import LoginButton from '../../components/LoginButton/LoginButton';
+import Drawer from '../DrawerMenu/DrawerMenu';
 
 const styles = theme => ({
   root: {
@@ -116,7 +117,7 @@ class PrimaryAppBar extends React.Component {
   render() {
     const { anchorEl, mobileMoreAnchorEl } = this.state;
     const { classes } = this.props;
-    const { 
+    const {
       isUser,
       activeUser,
     } = this.props.AppBar;
@@ -171,13 +172,18 @@ class PrimaryAppBar extends React.Component {
 
     return (
       <div className={classes.root}>
+        <Drawer />
         <AppBar position="static">
-          <Toolbar>
-            <h4>MeetingApp</h4>
-            {
-              isUser 
+          {
+            isUser
               ?
               <Toolbar>
+                <h4>MeetingApp</h4>
+                <LoginButton activeUser={activeUser} />
+              </Toolbar>
+              :
+              <Toolbar>
+                <h4>MeetingApp</h4>
                 <div className={classes.search}>
                   <div className={classes.searchIcon}>
                     <SearchIcon />
@@ -217,10 +223,7 @@ class PrimaryAppBar extends React.Component {
                   </IconButton>
                 </div>
               </Toolbar>
-              :
-              <LoginButton activeUser={ activeUser } />
-            }
-          </Toolbar>
+          }
         </AppBar>
         {renderMenu}
         {renderMobileMenu}
