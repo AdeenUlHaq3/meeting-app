@@ -20,11 +20,17 @@ class SelectedListItem extends React.Component {
             setSelectedPlace
         } = this.props.PlacesList;
 
+        const venue = selectedPlace.venue ? selectedPlace.venue.name : selectedPlace.name;
+        const crossStreet = selectedPlace.venue ? selectedPlace.venue.location.crossStreet || '' : '';
+        const address = selectedPlace.venue ? selectedPlace.venue.location.address : selectedPlace.location.address || '';
+        const latitude = selectedPlace.venue ? selectedPlace.venue.location.lat : selectedPlace.location.lat || '';
+        const longitude = selectedPlace.venue ? selectedPlace.venue.location.lng : selectedPlace.location.lng || '';
+        
         this.setState({
             selectedIndex: index
         });
-
-        setSelectedPlace(selectedPlace);
+        
+        setSelectedPlace({venue, crossStreet, address, latitude, longitude});
     };
 
     render() {

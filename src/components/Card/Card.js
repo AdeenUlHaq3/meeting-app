@@ -8,9 +8,10 @@ import GeoFire from 'geofire';
 import { withStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 
-//constants
+//Improt Constants
 import { BASE_URL, CLIENT_ID, CLIENT_SECRET, VERSION } from '../../constants/fourSquare';
 
+//Improt Dialogs
 import ConfirmationDialog from '../../screens/RecommendedPeoples/components/dialogs/ConfirmationDialog/ConfirmationDialog';
 import VenueDetailsDialog from '../../screens/RecommendedPeoples/components/dialogs/VenueDetailsDialog/VenueDetailsDialog';
 
@@ -34,7 +35,8 @@ class Card extends React.Component {
         recommendedUsers: [],
         recommendedPlaces: [],
         isConfirmDialog: false,
-        isVenueDetailsDialog: false
+        isVenueDetailsDialog: false,
+        isDateAndTimeDialog: false
     }
 
     componentDidMount() {
@@ -101,7 +103,7 @@ class Card extends React.Component {
     }
 
     rejectUser = () => {
-        
+
     }
 
     closeConfirmDialog = (bool) => {
@@ -153,7 +155,7 @@ class Card extends React.Component {
         instance.get(`${SEARCH_TERM}?client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&v=${VERSION}&ll=${ll}&query=${placeSearchTerm}`)
             .then(result => {
                 this.setState({
-                    recommendedPlaces: result.data.response.venues 
+                    recommendedPlaces: result.data.response.venues
                 });
             })
             .catch(err => console.log(err));
@@ -169,10 +171,13 @@ class Card extends React.Component {
         });
     };
 
-    sendRequestForMeeting = () => {
-        console.log('a');
-        
-    }
+    showDateAndTimeDialog = (selectedPlace) => {
+        this.setState({
+            isVenueDetailsDialog: false,
+            isDateAndTimeDialog: true,
+            selectedPlace
+        });
+    };
 
     render() {
         const {
@@ -201,46 +206,44 @@ class Card extends React.Component {
                         isVenueDetailsDialog,
                         recommendedPlaces,
                         closeVenueDetailsDialog: this.closeVenueDetailsDialog,
+                        showDateAndTimeDialog: this.showDateAndTimeDialog,
                         searchPlaces: this.searchPlaces,
                         setNearestPlaces: this.setNearestPlaces,
-                        sendRequestForMeeting: this.sendRequestForMeeting
                     }}
                 />
                 {
                     recommendedUsers.length !== 0 &&
-                    <Grid container>
-                        <Grid item lg={12}>
-                            <Cards onEnd={this.rejectUser} className='master-root'>
-                                {
-                                    recommendedUsers.map((recommendedUser, index) =>
-                                        <CardForSwipe
-                                            key={recommendedUser.nickName}
-                                            onSwipeLeft={this.rejectUser}
-                                            onSwipeRight={() => this.confirm(index)}>
-                                            <Grid container>
-                                                <Grid item lg={12}>
-                                                    <Carousel
-                                                        autoPlay={true}
-                                                        infiniteLoop={true}
-                                                        emulateTouch={true}
-                                                        swipeable={true}
-                                                        showArrows={false}
-                                                        showThumbs={false}
-                                                    >
-                                                        {
-                                                            recommendedUser.images.map(image => <img key={image} src={image} alt='' />)
-                                                        }
-                                                    </Carousel>
-                                                </Grid>
-                                                <Grid item lg={12}>{recommendedUser.displayName}</Grid>
-                                                <Grid item lg={12}>{recommendedUser.nickName}</Grid>
+                    <div style={{ margin: "0px auto" }}>
+                        <Cards onEnd={this.rejectUser} className='master-root'>
+                            {
+                                recommendedUsers.map((recommendedUser, index) =>
+                                    <CardForSwipe
+                                        key={recommendedUser.nickName}
+                                        onSwipeLeft={this.rejectUser}
+                                        onSwipeRight={() => this.confirm(index)}>
+                                        <Grid container>
+                                            <Grid item lg={12}>
+                                                <Carousel
+                                                    autoPlay={true}
+                                                    infiniteLoop={true}
+                                                    emulateTouch={true}
+                                                    swipeable={true}
+                                                    showArrows={false}
+                                                    showThumbs={false}
+                                                >
+                                                    {
+                                                        recommendedUser.images.map(image => <img key={image} src={image} alt='' />)
+                                                    }
+                                                </Carousel>
                                             </Grid>
-                                        </CardForSwipe>
-                                    )
-                                }
-                            </Cards>
-                        </Grid>
-                    </Grid>
+                                            <Grid item lg={12}>{recommendedUser.displayName}</Grid>
+                                            <Grid item lg={12}>{recommendedUser.nickName}</Grid>
+                                        </Grid>
+                                    </CardForSwipe>
+                                )
+                            }
+                        </Cards>
+                    </div>
                 }
             </div>
         );

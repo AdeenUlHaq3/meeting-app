@@ -38,8 +38,22 @@ class ScrollDialog extends React.Component {
   }
 
   setSelectedPlace = (selectedPlace) => {
-    console.log(selectedPlace);
+    this.setState({
+      selectedPlace
+    });
+  };
 
+  goToDateAndTime = () => {
+    const {
+      selectedPlace
+    } = this.state;
+
+    const {
+      showDateAndTimeDialog
+    } = this.state;
+
+    if (selectedPlace) 
+      showDateAndTimeDialog(selectedPlace);
   }
 
   render() {
@@ -52,7 +66,6 @@ class ScrollDialog extends React.Component {
       isVenueDetailsDialog,
       closeVenueDetailsDialog,
       setNearestPlaces,
-      sendRequestForMeeting,
       classes
     } = this.props.VenueDetailsDialog;
 
@@ -80,7 +93,6 @@ class ScrollDialog extends React.Component {
                         onChange={this.handleChange}
                         value={placeSearchTerm}
                         variant="outlined"
-                        margin='none'
                       />
                     </Grid>
                     <Grid item lg={2}>
@@ -100,7 +112,6 @@ class ScrollDialog extends React.Component {
             <PlacesList
               PlacesList={{
                 recommendedPlaces,
-                sendRequestForMeeting,
                 setSelectedPlace: this.setSelectedPlace
               }}
             />
@@ -109,8 +120,8 @@ class ScrollDialog extends React.Component {
             <Button className={classes.button} onClick={setNearestPlaces}>
               Nearest Places
             </Button>
-            <Button className={classes.button} onClick={sendRequestForMeeting}>
-              Send Request
+            <Button className={classes.button} onClick={this.goToDateAndTime}>
+              Next
             </Button>
           </DialogActions>
         </Dialog>
