@@ -3,19 +3,59 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
+
+import PlacesList from '../../lists/PlacesList/PlacesList';
+import { Divider } from '@material-ui/core';
 
 class ScrollDialog extends React.Component {
-  
+
+  state = {
+    placeSearchTerm: '',
+    recommendedPlace: []
+  };
+
+  handleSearch = (e) => {
+    e.preventDefault();
+
+    const {
+      placeSearchTerm
+    } = this.state;
+
+    const {
+      searchPlaces
+    } = this.props.VenueDetailsDialog;
+
+    searchPlaces(placeSearchTerm);
+  }
+
+  handleChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
+
+  setSelectedPlace = (selectedPlace) => {
+    console.log(selectedPlace);
+
+  }
+
   render() {
     const {
+      placeSearchTerm
+    } = this.state;
+
+    const {
+      recommendedPlaces,
       isVenueDetailsDialog,
       closeVenueDetailsDialog,
+      setNearestPlaces,
       sendRequestForMeeting,
       classes
     } = this.props.VenueDetailsDialog;
-    
+
     return (
       <div>
         <Dialog
@@ -23,49 +63,52 @@ class ScrollDialog extends React.Component {
           onClose={closeVenueDetailsDialog}
           scroll='paper'
           aria-labelledby="scroll-dialog-title"
+          fullWidth={true}
+          maxWidth={'md'}
         >
-          <DialogTitle id="scroll-dialog-title">Subscribe</DialogTitle>
           <DialogContent>
-            <DialogContentText>
-              Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac
-              facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum
-              at eros. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus
-              sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Aenean lacinia bibendum
-              nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur
-              et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla. Cras
-              mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in,
-              egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-              Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis
-              lacus vel augue laoreet rutrum faucibus dolor auctor. Aenean lacinia bibendum nulla
-              sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
-              Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla. Cras mattis
-              consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in,
-              egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-              Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis
-              lacus vel augue laoreet rutrum faucibus dolor auctor. Aenean lacinia bibendum nulla
-              sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
-              Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla. Cras mattis
-              consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in,
-              egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-              Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis
-              lacus vel augue laoreet rutrum faucibus dolor auctor. Aenean lacinia bibendum nulla
-              sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
-              Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla. Cras mattis
-              consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in,
-              egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-              Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis
-              lacus vel augue laoreet rutrum faucibus dolor auctor. Aenean lacinia bibendum nulla
-              sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
-              Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla. Cras mattis
-              consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in,
-              egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-              Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis
-              lacus vel augue laoreet rutrum faucibus dolor auctor. Aenean lacinia bibendum nulla
-              sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
-              Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.
-            </DialogContentText>
+            <Grid container>
+              <Grid item lg={12}>
+                <form onSubmit={this.handleSearch}>
+                  <Grid container>
+                    <Grid item lg={10}>
+                      <TextField
+                        required
+                        className={classes.textfield}
+                        label="Enter Place Name"
+                        name="placeSearchTerm"
+                        onChange={this.handleChange}
+                        value={placeSearchTerm}
+                        variant="outlined"
+                        margin='none'
+                      />
+                    </Grid>
+                    <Grid item lg={2}>
+                      <Button
+                        className={classes.button}
+                        type='submit'
+                        variant="contained"
+                      >
+                        Search
+                </Button>
+                    </Grid>
+                  </Grid>
+                </form>
+              </Grid>
+            </Grid>
+            <DialogTitle id="scroll-dialog-title">Recommended Places</DialogTitle>
+            <PlacesList
+              PlacesList={{
+                recommendedPlaces,
+                sendRequestForMeeting,
+                setSelectedPlace: this.setSelectedPlace
+              }}
+            />
           </DialogContent>
           <DialogActions>
+            <Button className={classes.button} onClick={setNearestPlaces}>
+              Nearest Places
+            </Button>
             <Button className={classes.button} onClick={sendRequestForMeeting}>
               Send Request
             </Button>

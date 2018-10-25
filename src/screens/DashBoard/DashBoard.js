@@ -1,4 +1,5 @@
 import React from 'react';
+import Button from '@material-ui/core/Button';
 
 class DashBoard extends React.Component {
     
@@ -10,7 +11,11 @@ class DashBoard extends React.Component {
         return(
             <div>
                 <h1>No meetings yet.</h1>
-                <button onClick={this.redirectToRecommendedPeoples}>See recommended peoples</button>
+                <Button 
+                    onClick={this.redirectToRecommendedPeoples}
+                >
+                    Set Meeting
+                </Button>
             </div>
         );
     };

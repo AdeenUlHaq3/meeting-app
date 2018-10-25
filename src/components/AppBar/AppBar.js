@@ -175,7 +175,7 @@ class PrimaryAppBar extends React.Component {
         <Drawer />
         <AppBar position="static">
           {
-            isUser
+            !isUser
               ?
               <Toolbar>
                 <h4>MeetingApp</h4>
