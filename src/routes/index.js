@@ -7,22 +7,25 @@ import BeveragesAndMeetingDuration from '../screens/Profile/BeveragesAndMeetingD
 import SelectLocation from '../screens/Profile/SelectLocation/SelectLocation';
 import DashBoard from '../screens/DashBoard/DashBoard';
 import RecommendedPeoples from '../screens/RecommendedPeoples/RecommendedPeoples';
+import Notifications from '../screens/Notifications/Notifications';
 
 export default (props) => {
     const {
         isUser,
+        notifications,
         activeUser
     } = props.Routes;
 
     return (
         <div>
-            <Route render={(props) => <AppBar {...props} AppBar={{ isUser, activeUser }} />} />
+            <Route render={(props) => <AppBar {...props} AppBar={{ isUser, notifications, activeUser }} />} />
             <Route path='/profile/nickNameAndPhone' component={NickNameAndPhone} />
             <Route path='/profile/chooseImages' component={ChooseImages} />
             <Route path='/profile/beveragesAndMeetingDuration' component={BeveragesAndMeetingDuration} />
             <Route path='/profile/selectLocation' component={SelectLocation} />
             <Route path='/dashboard' component={DashBoard} />
             <Route path='/recommendedPeoples' component={RecommendedPeoples} />
+            <Route path='/notifications'  render={(props) => <Notifications {...props} Notifications={{ notifications }} />} />
         </div>
     );
 };

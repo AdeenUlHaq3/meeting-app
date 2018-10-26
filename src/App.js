@@ -3,6 +3,10 @@ import './App.css';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
 
+//Import Firebase Config
+import firebase from './config/firebase';
+
+//Import Routes
 import Routes from './routes';
 
 //Creating Theme
@@ -41,23 +45,39 @@ const theme = createMuiTheme({
 
 class App extends Component {
   state = {
-    isUser: false
+    isUser: false,
+    notifications: []
   }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.isUser !== this.state.isUser)
+      firebase.database().ref(`Users/${firebase.auth().currentUser.uid}`)
+        .once('value', snapshot => {
+
+          const notifications = snapshot.val().notifications || [];
+          
+          this.setState({
+            notifications
+          });
+
+        });
+  };
 
   activeUser = () => {
     this.setState({
       isUser: true
-    })
-  }
+    });
+  };
 
   render() {
     const {
-      isUser
+      isUser,
+      notifications
     } = this.state;
 
     return (
       <MuiThemeProvider theme={theme}>
-        <Routes Routes={{isUser, activeUser: this.activeUser}} />
+        <Routes Routes={{ isUser, notifications, activeUser: this.activeUser }} />
       </MuiThemeProvider>
     );
   }

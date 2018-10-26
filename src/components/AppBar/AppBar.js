@@ -113,9 +113,16 @@ class PrimaryAppBar extends React.Component {
     this.setState({ mobileMoreAnchorEl: null });
   };
 
+  redirectToNotifications = () => {
+    this.props.history.push('/notifications');
+  };
+
   render() {
     const { anchorEl, mobileMoreAnchorEl } = this.state;
     const { classes } = this.props;
+    const {
+      notifications
+    } = this.props.AppBar;
     const {
       isUser,
       activeUser,
@@ -146,7 +153,7 @@ class PrimaryAppBar extends React.Component {
       >
         <MenuItem>
           <IconButton color="inherit">
-            <Badge className={classes.margin} badgeContent={4} color="secondary">
+            <Badge className={classes.margin} badgeContent={0} color="secondary">
               <MailIcon />
             </Badge>
           </IconButton>
@@ -154,7 +161,7 @@ class PrimaryAppBar extends React.Component {
         </MenuItem>
         <MenuItem>
           <IconButton color="inherit">
-            <Badge className={classes.margin} badgeContent={11} color="secondary">
+            <Badge className={classes.margin} badgeContent={notifications.length} color="secondary">
               <NotificationsIcon />
             </Badge>
           </IconButton>
@@ -197,12 +204,12 @@ class PrimaryAppBar extends React.Component {
                 <div className={classes.grow} />
                 <div className={classes.sectionDesktop}>
                   <IconButton color="inherit">
-                    <Badge className={classes.margin} badgeContent={4} color="secondary">
+                    <Badge className={classes.margin} badgeContent={0} color="secondary">
                       <MailIcon />
                     </Badge>
                   </IconButton>
-                  <IconButton color="inherit">
-                    <Badge className={classes.margin} badgeContent={17} color="secondary">
+                  <IconButton onClick={this.redirectToNotifications} color="inherit">
+                    <Badge className={classes.margin} badgeContent={notifications.length} color="secondary">
                       <NotificationsIcon />
                     </Badge>
                   </IconButton>

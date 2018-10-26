@@ -29,8 +29,8 @@ class DateAndTimeDialog extends React.Component {
         } = this.props.DateAndTimeDialog;
 
         firebase.database().ref(`Users/${swappedUserId}`)
-            .once('value', user => {
-                const notifications = user.val().notifications || [];
+            .once('value', snapshot => {
+                const notifications = snapshot.val().notifications || [];
 
                 notifications.push({
                     ...selectedPlace, date, time
