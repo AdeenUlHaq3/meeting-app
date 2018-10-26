@@ -1,21 +1,23 @@
 import React from 'react';
 import Cards, { Card as CardForSwipe } from 'react-swipe-deck';
-import firebase from '../../config/firebase';
+import firebase from '../../../../config/firebase';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
 import Grid from '@material-ui/core/Grid';
 import GeoFire from 'geofire';
 import { withStyles } from '@material-ui/core/styles';
 import axios from 'axios';
+import MuiCard from './MuiCard';
 
-//Improt Constants
-import { BASE_URL, CLIENT_ID, CLIENT_SECRET, VERSION } from '../../constants/fourSquare';
+//Import Constants
+import { BASE_URL, CLIENT_ID, CLIENT_SECRET, VERSION } from '../../../../constants/fourSquare';
 
-//Improt Dialogs
-import ConfirmationDialog from '../../screens/RecommendedPeoples/components/dialogs/ConfirmationDialog/ConfirmationDialog';
-import VenueDetailsDialog from '../../screens/RecommendedPeoples/components/dialogs/VenueDetailsDialog/VenueDetailsDialog';
+//Import Dialogs
+import ConfirmationDialog from '../dialogs/ConfirmationDialog/ConfirmationDialog';
+import VenueDetailsDialog from '../dialogs/VenueDetailsDialog/VenueDetailsDialog';
+import DateAndTimeDialog from '../dialogs/DateAndTimeDialog/DateAndTimeDialog';
 
-const styles = {
+const styles = theme => ({
     button: {
         width: '100%',
         float: 'left',
@@ -24,16 +26,19 @@ const styles = {
         boxShadow: 'none',
     },
     textfield: {
-        float: 'left',
+        marginLeft: theme.spacing.unit,
+        marginRight: theme.spacing.unit,
         width: '100%'
     }
-};
+});
 
-class Card extends React.Component {
+class SwipeableCard extends React.Component {
 
     state = {
         recommendedUsers: [],
         recommendedPlaces: [],
+        selectedPlace: [],
+        swappedUserId: '',
         isConfirmDialog: false,
         isVenueDetailsDialog: false,
         isDateAndTimeDialog: false
@@ -78,7 +83,7 @@ class Card extends React.Component {
                                     recommendedUsers
                                 } = this.state;
 
-                                recommendedUsers.push(user.val());
+                                recommendedUsers.push({...user.val(), uid: user.key});
 
                                 this.setState({
                                     recommendedUsers
@@ -95,10 +100,10 @@ class Card extends React.Component {
             });
     }
 
-    confirm = (index) => {
+    confirm = (uid) => {
         this.setState({
             isConfirmDialog: true,
-            userIndexForMeeting: index
+            swappedUserId: uid
         })
     }
 
@@ -179,12 +184,21 @@ class Card extends React.Component {
         });
     };
 
+    closeDateAndTimeDialog = () => {
+        this.setState({
+            isDateAndTimeDialog: false
+        })
+    }
+
     render() {
         const {
             recommendedUsers,
             recommendedPlaces,
+            selectedPlace,
+            swappedUserId,
             isConfirmDialog,
             isVenueDetailsDialog,
+            isDateAndTimeDialog
         } = this.state;
 
         const {
@@ -211,43 +225,59 @@ class Card extends React.Component {
                         setNearestPlaces: this.setNearestPlaces,
                     }}
                 />
+                <DateAndTimeDialog
+                    DateAndTimeDialog={{
+                        classes,
+                        selectedPlace,
+                        swappedUserId,
+                        isDateAndTimeDialog,
+                        closeDateAndTimeDialog: this.closeDateAndTimeDialog
+                    }}
+                />
+                {/* <Cards onEnd={this.rejectUser} className='master-root'>
+                    <CardForSwipe
+                        // key={recommendedUser.nickName}
+                        // onSwipeLeft={this.rejectUser}
+                        // onSwipeRight={() => this.confirm()}
+                        >
+                        <MuiCard MuiCard={{recommendedUsers }} />
+                    </CardForSwipe>
+                    )
+                }
+                </Cards> */}
                 {
                     recommendedUsers.length !== 0 &&
                     <div style={{ margin: "0px auto" }}>
                         <Cards onEnd={this.rejectUser} className='master-root'>
                             {
-                                recommendedUsers.map((recommendedUser, index) =>
+                                recommendedUsers.map(recommendedUser =>
                                     <CardForSwipe
                                         key={recommendedUser.nickName}
                                         onSwipeLeft={this.rejectUser}
-                                        onSwipeRight={() => this.confirm(index)}>
-                                        <Grid container>
-                                            <Grid item lg={12}>
-                                                <Carousel
-                                                    autoPlay={true}
-                                                    infiniteLoop={true}
-                                                    emulateTouch={true}
-                                                    swipeable={true}
-                                                    showArrows={false}
-                                                    showThumbs={false}
-                                                >
-                                                    {
-                                                        recommendedUser.images.map(image => <img key={image} src={image} alt='' />)
-                                                    }
-                                                </Carousel>
-                                            </Grid>
-                                            <Grid item lg={12}>{recommendedUser.displayName}</Grid>
-                                            <Grid item lg={12}>{recommendedUser.nickName}</Grid>
-                                        </Grid>
+                                        onSwipeRight={() => this.confirm(recommendedUser.uid)}>
+                                        <Carousel
+                                            autoPlay={true}
+                                            infiniteLoop={true}
+                                            emulateTouch={true}
+                                            swipeable={true}
+                                            showArrows={false}
+                                            showThumbs={false}
+                                        >
+                                            {
+                                                recommendedUser.images.map(image => <img key={image} src={image} alt='' />)
+                                            }
+                                        </Carousel>
+                                        <Grid item lg={12}>{recommendedUser.displayName}</Grid>
+                                        <Grid item lg={12}>{recommendedUser.nickName}</Grid>
                                     </CardForSwipe>
                                 )
                             }
                         </Cards>
                     </div>
                 }
-            </div>
+            </div >
         );
     };
 };
 
-export default withStyles(styles)(Card);
+export default withStyles(styles)(SwipeableCard);

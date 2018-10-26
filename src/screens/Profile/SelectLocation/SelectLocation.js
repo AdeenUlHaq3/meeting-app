@@ -52,7 +52,7 @@ class SelectLocation extends React.Component {
         
         firebase.database().ref(`Users/${myUId}`)
         .set(
-            {...this.props.location.state, ...this.state.coords}
+            {...this.props.location.state, ...this.state.coords, notification: []}
         )
         .then(() => {
             this.props.history.push('/dashboard');

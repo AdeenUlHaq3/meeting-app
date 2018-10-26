@@ -16,7 +16,6 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 
 import LoginButton from '../../components/LoginButton/LoginButton';
-import Drawer from '../DrawerMenu/DrawerMenu';
 
 const styles = theme => ({
   root: {
@@ -172,7 +171,6 @@ class PrimaryAppBar extends React.Component {
 
     return (
       <div className={classes.root}>
-        <Drawer />
         <AppBar position="static">
           {
             !isUser

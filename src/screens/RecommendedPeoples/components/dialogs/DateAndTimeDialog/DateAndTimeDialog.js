@@ -5,10 +5,47 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
+import swal from 'sweetalert2';
+
+import firebase from '../../../../../config/firebase';
 
 class DateAndTimeDialog extends React.Component {
     state = {
+        date: (new Date(new Date().toLocaleString()).toISOString()).split('.')[0].split('T')[0],
+        time: (new Date(new Date().toLocaleString()).toISOString()).split('.')[0].split('T')[1],
         open: false,
+    };
+
+    handleChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        });
+    };
+
+    sendRequestForMeeting = (selectedPlace, date, time) => {
+        const {
+            swappedUserId,
+            closeDateAndTimeDialog
+        } = this.props.DateAndTimeDialog;
+
+        firebase.database().ref(`Users/${swappedUserId}`)
+            .once('value', user => {
+                const notifications = user.val().notifications || [];
+
+                notifications.push({
+                    ...selectedPlace, date, time
+                });
+
+                firebase.database().ref(`Users/${swappedUserId}`)
+                    .update({
+                        notifications
+                    })
+                    .then(() => {
+                        closeDateAndTimeDialog();
+                        swal('Request Send');
+                    })
+                    
+            });
     };
 
     handleClickOpen = () => {
@@ -20,36 +57,62 @@ class DateAndTimeDialog extends React.Component {
     };
 
     render() {
+        const {
+            date,
+            time
+        } = this.state;
+
+        const {
+            classes,
+            selectedPlace,
+            isDateAndTimeDialog
+        } = this.props.DateAndTimeDialog;
+
         return (
-            <div>
-                <Button onClick={this.handleClickOpen}>Open alert dialog</Button>
+            <form>
                 <Dialog
-                    open={this.state.open}
+                    open={isDateAndTimeDialog}
                     onClose={this.handleClose}
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description"
                 >
-                    <DialogTitle id="alert-dialog-title">{"Use Google's location service?"}</DialogTitle>
+                    <DialogTitle id="alert-dialog-title">Select date & time for meeting.</DialogTitle>
                     <DialogContent>
 
                     </DialogContent>
                     <TextField
-                        id="date"
-                        label="Birthday"
+                        name="date"
+                        label="Date"
                         type="date"
-                        defaultValue="2017-05-24"
+                        value={date}
+                        onChange={this.handleChange}
+                        className={classes.textField}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                    />
+                    <TextField
+                        name="time"
+                        label="Time"
+                        type="time"
+                        value={time}
+                        onChange={this.handleChange}
                         className={classes.textField}
                         InputLabelProps={{
                             shrink: true,
                         }}
                     />
                     <DialogActions>
-                        <Button onClick={this.handleClose}>
+                        <Button
+                            type='submit'
+                            className={classes.button}
+                            onClick={() => this.sendRequestForMeeting(selectedPlace, date, time)}
+                        >
                             Save
                         </Button>
                     </DialogActions>
                 </Dialog>
-            </div>
+            </form>
         );
     }
 }

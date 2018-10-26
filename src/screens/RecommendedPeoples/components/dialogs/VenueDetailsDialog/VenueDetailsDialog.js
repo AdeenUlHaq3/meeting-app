@@ -8,7 +8,6 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 
 import PlacesList from '../../lists/PlacesList/PlacesList';
-import { Divider } from '@material-ui/core';
 
 class ScrollDialog extends React.Component {
 
@@ -50,8 +49,8 @@ class ScrollDialog extends React.Component {
 
     const {
       showDateAndTimeDialog
-    } = this.state;
-
+    } = this.props.VenueDetailsDialog;
+    
     if (selectedPlace) 
       showDateAndTimeDialog(selectedPlace);
   }

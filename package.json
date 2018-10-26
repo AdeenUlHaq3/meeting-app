@@ -11,12 +11,12 @@
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-google-maps": "^9.4.5",
-    "react-image": "^1.5.1",
     "react-material-ui-form-validator": "^2.0.2",
     "react-responsive-carousel": "^3.1.43",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.0.4",
-    "react-swipe-deck": "^0.1.17"
+    "react-swipe-deck": "^0.1.17",
+    "sweetalert2": "^7.28.10"
   },
   "scripts": {
     "start": "react-scripts start",
