@@ -1,4 +1,5 @@
 import React from 'react';
+import NotificationsList from './components/lists/NotificationsList';
 
 class Notifications extends React.Component {
     render() {
@@ -11,7 +12,7 @@ class Notifications extends React.Component {
                 {
                     notifications.map(notification => {
                         return(
-                            <div>{notification.venue}</div>
+                            <NotificationsList NotificationsList={{notification}} />
                         );
                     })
                 }

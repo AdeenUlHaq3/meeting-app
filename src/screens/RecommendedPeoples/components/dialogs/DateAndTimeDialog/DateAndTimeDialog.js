@@ -48,14 +48,6 @@ class DateAndTimeDialog extends React.Component {
             });
     };
 
-    handleClickOpen = () => {
-        this.setState({ open: true });
-    };
-
-    handleClose = () => {
-        this.setState({ open: false });
-    };
-
     render() {
         const {
             date,

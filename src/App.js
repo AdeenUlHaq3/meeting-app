@@ -50,17 +50,18 @@ class App extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.isUser !== this.state.isUser)
-      firebase.database().ref(`Users/${firebase.auth().currentUser.uid}`)
-        .once('value', snapshot => {
+    if (this.state.isUser)
+      if (prevState.isUser !== this.state.isUser)
+        firebase.database().ref(`Users/${firebase.auth().currentUser.uid}`)
+          .once('value', snapshot => {
 
-          const notifications = snapshot.val().notifications || [];
-          
-          this.setState({
-            notifications
+            const notifications = snapshot.val().notifications || [];
+
+            this.setState({
+              notifications
+            });
+
           });
-
-        });
   };
 
   activeUser = () => {
@@ -68,6 +69,16 @@ class App extends Component {
       isUser: true
     });
   };
+
+  logOut = () => {
+    firebase.auth().signOut()
+      .then(() => {
+        this.props.history.push('/');
+        this.setState({
+          isUser: false
+        });
+      });
+  }
 
   render() {
     const {
@@ -77,7 +88,7 @@ class App extends Component {
 
     return (
       <MuiThemeProvider theme={theme}>
-        <Routes Routes={{ isUser, notifications, activeUser: this.activeUser }} />
+        <Routes Routes={{ isUser, notifications, activeUser: this.activeUser, logOut: this.logOut }} />
       </MuiThemeProvider>
     );
   }

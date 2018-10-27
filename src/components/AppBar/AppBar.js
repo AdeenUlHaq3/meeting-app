@@ -100,17 +100,31 @@ class PrimaryAppBar extends React.Component {
     this.setState({ anchorEl: event.currentTarget });
   };
 
-  handleMenuClose = () => {
+  handleMenuClose = (action) => {
+    const {
+      logOut
+    } = this.props.AppBar;
+
     this.setState({ anchorEl: null });
     this.handleMobileMenuClose();
+   
+    if (action === 'logout')
+      logOut();
   };
 
   handleMobileMenuOpen = event => {
     this.setState({ mobileMoreAnchorEl: event.currentTarget });
   };
 
-  handleMobileMenuClose = () => {
+  handleMobileMenuClose = (action) => {
+    const {
+      logOut
+    } = this.props.AppBar;
+
     this.setState({ mobileMoreAnchorEl: null });
+    
+    if (action === 'logout')
+      logOut();
   };
 
   redirectToNotifications = () => {
@@ -125,7 +139,7 @@ class PrimaryAppBar extends React.Component {
     } = this.props.AppBar;
     const {
       isUser,
-      activeUser,
+      activeUser
     } = this.props.AppBar;
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -138,8 +152,9 @@ class PrimaryAppBar extends React.Component {
         open={isMenuOpen}
         onClose={this.handleMenuClose}
       >
-        <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-        <MenuItem onClick={this.handleClose}>My account</MenuItem>
+        <MenuItem onClick={this.handleMenuClose}>Profile</MenuItem>
+        <MenuItem onClick={this.handleMenuClose}>My account</MenuItem>
+        <MenuItem onClick={() => this.handleMenuClose('logout')}>Logout</MenuItem>
       </Menu>
     );
 

@@ -13,12 +13,13 @@ export default (props) => {
     const {
         isUser,
         notifications,
-        activeUser
+        activeUser,
+        logOut
     } = props.Routes;
 
     return (
         <div>
-            <Route render={(props) => <AppBar {...props} AppBar={{ isUser, notifications, activeUser }} />} />
+            <Route render={(props) => <AppBar {...props} AppBar={{ isUser, notifications, activeUser, logOut }} />} />
             <Route path='/profile/nickNameAndPhone' component={NickNameAndPhone} />
             <Route path='/profile/chooseImages' component={ChooseImages} />
             <Route path='/profile/beveragesAndMeetingDuration' component={BeveragesAndMeetingDuration} />

@@ -83,7 +83,7 @@ class SwipeableCard extends React.Component {
                                     recommendedUsers
                                 } = this.state;
 
-                                recommendedUsers.push({...user.val(), uid: user.key});
+                                recommendedUsers.push({ ...user.val(), uid: user.key });
 
                                 this.setState({
                                     recommendedUsers
@@ -234,18 +234,36 @@ class SwipeableCard extends React.Component {
                         closeDateAndTimeDialog: this.closeDateAndTimeDialog
                     }}
                 />
+                {
+                    recommendedUsers.length !== 0 &&
+                    <div style={{ margin: "0px auto" }}>
+                        <Cards size={[500,500]} cardSize={[300,300]} onEnd={this.rejectUser} className='master-root'>
+                            {
+                                recommendedUsers.map(recommendedUser =>
+                                    <CardForSwipe
+                                        // key={recommendedUser.nickName}
+                                        onSwipeLeft={this.rejectUser}
+                                        onSwipeRight={() => this.confirm()}
+                                    >
+                                        <MuiCard MuiCard={{ recommendedUser }} />
+                                    </CardForSwipe>
+                                )
+                            }
+                        </Cards>
+                    </div>
+                }
                 {/* <Cards onEnd={this.rejectUser} className='master-root'>
                     <CardForSwipe
                         // key={recommendedUser.nickName}
-                        // onSwipeLeft={this.rejectUser}
-                        // onSwipeRight={() => this.confirm()}
-                        >
-                        <MuiCard MuiCard={{recommendedUsers }} />
+                        onSwipeLeft={this.rejectUser}
+                        onSwipeRight={() => this.confirm()}
+                    >
+                        <MuiCard MuiCard={{ recommendedUsers }} />
                     </CardForSwipe>
                     )
                 }
                 </Cards> */}
-                {
+                {/* {
                     recommendedUsers.length !== 0 &&
                     <div style={{ margin: "0px auto" }}>
                         <Cards onEnd={this.rejectUser} className='master-root'>
@@ -274,7 +292,7 @@ class SwipeableCard extends React.Component {
                             }
                         </Cards>
                     </div>
-                }
+                } */}
             </div >
         );
     };
