@@ -9,6 +9,9 @@ import firebase from './config/firebase';
 //Import Routes
 import Routes from './routes';
 
+import Date from './screens/RecommendedPeoples/components/dialogs/DateAndTimeDialog/components/Date';
+import SendRequestSnackBar from './screens/RecommendedPeoples/components/snackbars/SendRequestSnackbar.js';
+
 //Creating Theme
 const theme = createMuiTheme({
   palette: {
@@ -64,6 +67,17 @@ class App extends Component {
           });
   };
 
+  componentDidMount() {
+    firebase.auth().onAuthStateChanged(user => {
+      if(user){
+        this.setState({
+          isUser: true
+        });
+        this.props.history.push('/dashboard');
+      };
+    });
+  };
+
   activeUser = () => {
     this.setState({
       isUser: true
@@ -73,10 +87,10 @@ class App extends Component {
   logOut = () => {
     firebase.auth().signOut()
       .then(() => {
-        this.props.history.push('/');
         this.setState({
           isUser: false
         });
+        this.props.history.push('/');
       });
   }
 
@@ -88,6 +102,8 @@ class App extends Component {
 
     return (
       <MuiThemeProvider theme={theme}>
+        {/* <Date /> */}
+        <SendRequestSnackBar />
         <Routes Routes={{ isUser, notifications, activeUser: this.activeUser, logOut: this.logOut }} />
       </MuiThemeProvider>
     );

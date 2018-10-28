@@ -27,11 +27,10 @@ class DateAndTimeDialog extends React.Component {
             swappedUserId,
             closeDateAndTimeDialog
         } = this.props.DateAndTimeDialog;
-
+        
         firebase.database().ref(`Users/${swappedUserId}`)
             .once('value', snapshot => {
                 const notifications = snapshot.val().notifications || [];
-
                 notifications.push({
                     ...selectedPlace, date, time
                 });
@@ -40,9 +39,8 @@ class DateAndTimeDialog extends React.Component {
                     .update({
                         notifications
                     })
-                    .then(() => {
+                       .then(() => {
                         closeDateAndTimeDialog();
-                        swal('Request Send');
                     })
                     
             });

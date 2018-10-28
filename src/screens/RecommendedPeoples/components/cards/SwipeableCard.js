@@ -2,8 +2,6 @@ import React from 'react';
 import Cards, { Card as CardForSwipe } from 'react-swipe-deck';
 import firebase from '../../../../config/firebase';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { Carousel } from "react-responsive-carousel";
-import Grid from '@material-ui/core/Grid';
 import GeoFire from 'geofire';
 import { withStyles } from '@material-ui/core/styles';
 import axios from 'axios';
@@ -16,6 +14,9 @@ import { BASE_URL, CLIENT_ID, CLIENT_SECRET, VERSION } from '../../../../constan
 import ConfirmationDialog from '../dialogs/ConfirmationDialog/ConfirmationDialog';
 import VenueDetailsDialog from '../dialogs/VenueDetailsDialog/VenueDetailsDialog';
 import DateAndTimeDialog from '../dialogs/DateAndTimeDialog/DateAndTimeDialog';
+
+//Import Snackbar
+import SendRequestSnackbar from '../snackbars/SendRequestSnackbar.js';
 
 const styles = theme => ({
     button: {
@@ -41,13 +42,13 @@ class SwipeableCard extends React.Component {
         swappedUserId: '',
         isConfirmDialog: false,
         isVenueDetailsDialog: false,
-        isDateAndTimeDialog: false
+        isDateAndTimeDialog: false,
+        isSnackbar: false
     }
 
     componentDidMount() {
-        // const myUId = firebase.auth().currentUser.uid;
-        const myUId = 'oUHN4GrQ7sVJaXGQE2z6VuMywad2';
-
+        const myUId = firebase.auth().currentUser && firebase.auth().currentUser.uid;
+        
         firebase.database().ref(`Users/${myUId}`)
             .once('value', me => {
                 const myObj = me.val();
@@ -186,7 +187,8 @@ class SwipeableCard extends React.Component {
 
     closeDateAndTimeDialog = () => {
         this.setState({
-            isDateAndTimeDialog: false
+            isDateAndTimeDialog: false,
+            isSnackbar: true
         })
     }
 
@@ -198,7 +200,8 @@ class SwipeableCard extends React.Component {
             swappedUserId,
             isConfirmDialog,
             isVenueDetailsDialog,
-            isDateAndTimeDialog
+            isDateAndTimeDialog,
+            isSnackbar
         } = this.state;
 
         const {
@@ -231,68 +234,27 @@ class SwipeableCard extends React.Component {
                         selectedPlace,
                         swappedUserId,
                         isDateAndTimeDialog,
+                        isSnackbar,
                         closeDateAndTimeDialog: this.closeDateAndTimeDialog
                     }}
                 />
+                <SendRequestSnackbar SendRequestSnackbar={{isSnackbar}} />
                 {
                     recommendedUsers.length !== 0 &&
-                    <div style={{ margin: "0px auto" }}>
-                        <Cards size={[500,500]} cardSize={[300,300]} onEnd={this.rejectUser} className='master-root'>
-                            {
-                                recommendedUsers.map(recommendedUser =>
-                                    <CardForSwipe
-                                        // key={recommendedUser.nickName}
-                                        onSwipeLeft={this.rejectUser}
-                                        onSwipeRight={() => this.confirm()}
-                                    >
-                                        <MuiCard MuiCard={{ recommendedUser }} />
-                                    </CardForSwipe>
-                                )
-                            }
-                        </Cards>
-                    </div>
+                    <Cards size={[500, 500]} cardSize={[300, 300]} onEnd={this.rejectUser} className='master-root'>
+                        {
+                            recommendedUsers.map(recommendedUser =>
+                                <CardForSwipe
+                                    key={recommendedUser.nickName}
+                                    onSwipeLeft={this.rejectUser}
+                                    onSwipeRight={() => this.confirm(recommendedUser.uid)}
+                                >
+                                    <MuiCard MuiCard={{ recommendedUser }} />
+                                </CardForSwipe>
+                            )
+                        }
+                    </Cards>
                 }
-                {/* <Cards onEnd={this.rejectUser} className='master-root'>
-                    <CardForSwipe
-                        // key={recommendedUser.nickName}
-                        onSwipeLeft={this.rejectUser}
-                        onSwipeRight={() => this.confirm()}
-                    >
-                        <MuiCard MuiCard={{ recommendedUsers }} />
-                    </CardForSwipe>
-                    )
-                }
-                </Cards> */}
-                {/* {
-                    recommendedUsers.length !== 0 &&
-                    <div style={{ margin: "0px auto" }}>
-                        <Cards onEnd={this.rejectUser} className='master-root'>
-                            {
-                                recommendedUsers.map(recommendedUser =>
-                                    <CardForSwipe
-                                        key={recommendedUser.nickName}
-                                        onSwipeLeft={this.rejectUser}
-                                        onSwipeRight={() => this.confirm(recommendedUser.uid)}>
-                                        <Carousel
-                                            autoPlay={true}
-                                            infiniteLoop={true}
-                                            emulateTouch={true}
-                                            swipeable={true}
-                                            showArrows={false}
-                                            showThumbs={false}
-                                        >
-                                            {
-                                                recommendedUser.images.map(image => <img key={image} src={image} alt='' />)
-                                            }
-                                        </Carousel>
-                                        <Grid item lg={12}>{recommendedUser.displayName}</Grid>
-                                        <Grid item lg={12}>{recommendedUser.nickName}</Grid>
-                                    </CardForSwipe>
-                                )
-                            }
-                        </Cards>
-                    </div>
-                } */}
             </div >
         );
     };
