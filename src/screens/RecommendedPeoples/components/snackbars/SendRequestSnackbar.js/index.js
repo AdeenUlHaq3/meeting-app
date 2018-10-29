@@ -12,6 +12,15 @@ const styles = theme => ({
 });
 
 class SimpleSnackbar extends React.Component {
+    state = {
+        open: true
+    };
+
+    handleClose = () => {
+        this.setState({
+            open: false
+        });
+    };
 
     render() {
         const { classes } = this.props;
@@ -28,8 +37,8 @@ class SimpleSnackbar extends React.Component {
                         vertical: 'bottom',
                         horizontal: 'left',
                     }}
-                    open={true}
-                    autoHideDuration={6000}
+                    open={this.state.open}
+                    autoHideDuration={3000}
                     onClose={this.handleClose}
                     ContentProps={{
                         'aria-describedby': 'message-id',

@@ -70,10 +70,10 @@ class App extends Component {
   componentDidMount() {
     firebase.auth().onAuthStateChanged(user => {
       if(user){
-        this.setState({
-          isUser: true
-        });
-        this.props.history.push('/dashboard');
+        // this.setState({
+        //   isUser: true
+        // });
+        // this.props.history.push('/dashboard');
       };
     });
   };
