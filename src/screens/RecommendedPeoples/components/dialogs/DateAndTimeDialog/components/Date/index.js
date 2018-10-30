@@ -1,9 +1,12 @@
-import React, { Fragment, PureComponent } from 'react';
-import { DatePicker } from 'material-ui-pickers';
+import React, { PureComponent } from 'react';
+import DateFnsUtils from 'material-ui-pickers/utils/date-fns-utils';
+import MuiPickersUtilsProvider from 'material-ui-pickers/MuiPickersUtilsProvider';
+import TimePicker from 'material-ui-pickers/TimePicker';
+import DatePicker from 'material-ui-pickers/DatePicker';
 
-class Date extends PureComponent {
+export default class App extends PureComponent {
     state = {
-        selectedDate: 'new Date()',
+        selectedDate: new Date(),
     }
 
     handleDateChange = (date) => {
@@ -14,20 +17,27 @@ class Date extends PureComponent {
         const { selectedDate } = this.state;
 
         return (
-            <Fragment>
+            <MuiPickersUtilsProvider utils={DateFnsUtils} >
                 <DatePicker
                     keyboard
-                    showTodayButton
-                    label="Uncontrolled input"
+                    label="Select Date"
                     value={selectedDate}
                     onChange={this.handleDateChange}
                     animateYearScrolling={false}
                     minDate={new Date()}
+                    format="dd/MM/yyyy"
+                    mask={[/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/]}
                     onInputChange={e => console.log('Keyboard Input:', e.target.value)}
                 />
-            </Fragment>
+
+                <TimePicker
+                    keyboard
+                    label="Select Time"
+                    value={selectedDate}
+                    onChange={this.handleDateChange}
+                    minDate={new Date()}
+                />
+            </MuiPickersUtilsProvider >
         );
     }
 }
-
-export default Date;

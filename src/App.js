@@ -2,15 +2,13 @@ import React, { Component } from 'react';
 import './App.css';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
+import Date from './screens/RecommendedPeoples/components/dialogs/DateAndTimeDialog/components/Date';
 
 //Import Firebase Config
 import firebase from './config/firebase';
 
 //Import Routes
 import Routes from './routes';
-
-import Date from './screens/RecommendedPeoples/components/dialogs/DateAndTimeDialog/components/Date';
-import SendRequestSnackBar from './screens/RecommendedPeoples/components/snackbars/SendRequestSnackbar.js';
 
 //Creating Theme
 const theme = createMuiTheme({
@@ -70,10 +68,10 @@ class App extends Component {
   componentDidMount() {
     firebase.auth().onAuthStateChanged(user => {
       if(user){
-        // this.setState({
-        //   isUser: true
-        // });
-        // this.props.history.push('/dashboard');
+        this.setState({
+          isUser: true
+        });
+        this.props.history.push('/dashboard');
       };
     });
   };
@@ -89,6 +87,7 @@ class App extends Component {
       .then(() => {
         this.setState({
           isUser: false
+
         });
         this.props.history.push('/');
       });
@@ -102,8 +101,7 @@ class App extends Component {
 
     return (
       <MuiThemeProvider theme={theme}>
-        {/* <Date /> */}
-        <SendRequestSnackBar />
+        <Date />
         <Routes Routes={{ isUser, notifications, activeUser: this.activeUser, logOut: this.logOut }} />
       </MuiThemeProvider>
     );

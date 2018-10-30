@@ -5,7 +5,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
-import swal from 'sweetalert2';
+import withMobileDialog from '@material-ui/core/withMobileDialog';
 
 import firebase from '../../../../../config/firebase';
 
@@ -58,9 +58,14 @@ class DateAndTimeDialog extends React.Component {
             isDateAndTimeDialog
         } = this.props.DateAndTimeDialog;
 
+        const {
+            fullScreen
+        } = this.props;
+
         return (
             <form>
                 <Dialog
+                    fullScreen={fullScreen}
                     open={isDateAndTimeDialog}
                     onClose={this.handleClose}
                     aria-labelledby="alert-dialog-title"
@@ -107,4 +112,4 @@ class DateAndTimeDialog extends React.Component {
     }
 }
 
-export default DateAndTimeDialog;
+export default withMobileDialog({breakpoint: 'xs'})(DateAndTimeDialog);

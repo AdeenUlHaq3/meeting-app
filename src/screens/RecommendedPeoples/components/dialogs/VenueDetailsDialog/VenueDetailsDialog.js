@@ -6,6 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
+import withMobileDialog from '@material-ui/core/withMobileDialog';
 
 import PlacesList from '../../lists/PlacesList/PlacesList';
 
@@ -50,8 +51,8 @@ class ScrollDialog extends React.Component {
     const {
       showDateAndTimeDialog
     } = this.props.VenueDetailsDialog;
-    
-    if (selectedPlace) 
+
+    if (selectedPlace)
       showDateAndTimeDialog(selectedPlace);
   }
 
@@ -68,9 +69,14 @@ class ScrollDialog extends React.Component {
       classes
     } = this.props.VenueDetailsDialog;
 
+    const {
+      fullScreen
+    } = this.props;
+
     return (
       <div>
         <Dialog
+          fullScreen={fullScreen}
           open={isVenueDetailsDialog}
           onClose={closeVenueDetailsDialog}
           scroll='paper'
@@ -129,4 +135,4 @@ class ScrollDialog extends React.Component {
   }
 }
 
-export default ScrollDialog;
+export default withMobileDialog()(ScrollDialog);
