@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import './App.css';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
-import Date from './screens/RecommendedPeoples/components/dialogs/DateAndTimeDialog/components/Date';
 
 //Import Firebase Config
 import firebase from './config/firebase';
@@ -27,6 +26,13 @@ const theme = createMuiTheme({
   },
   overrides: {
     // Name of the component ⚛️ / style sheet
+    MuiPickersModal: {
+      dialogAction: {
+        background: 'transparent',
+        color: '#FE6B8B',
+        boxShadow: 'none'
+      },
+    },
     MuiButton: {
       // Name of the rule
       root: {
@@ -67,7 +73,7 @@ class App extends Component {
 
   componentDidMount() {
     firebase.auth().onAuthStateChanged(user => {
-      if(user){
+      if (user) {
         this.setState({
           isUser: true
         });
@@ -101,7 +107,6 @@ class App extends Component {
 
     return (
       <MuiThemeProvider theme={theme}>
-        <Date />
         <Routes Routes={{ isUser, notifications, activeUser: this.activeUser, logOut: this.logOut }} />
       </MuiThemeProvider>
     );

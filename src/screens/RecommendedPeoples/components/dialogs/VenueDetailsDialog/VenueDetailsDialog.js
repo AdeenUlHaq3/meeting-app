@@ -56,6 +56,12 @@ class ScrollDialog extends React.Component {
       showDateAndTimeDialog(selectedPlace);
   }
 
+  showDirections = (recommendedPlace) => {
+    const lat = recommendedPlace.venue ? recommendedPlace.venue.location.lat : recommendedPlace.location.lat;
+    const lng = recommendedPlace.venue ? recommendedPlace.venue.location.lng : recommendedPlace.location.lng;
+
+  }
+
   render() {
     const {
       placeSearchTerm
@@ -117,6 +123,7 @@ class ScrollDialog extends React.Component {
             <PlacesList
               PlacesList={{
                 recommendedPlaces,
+                showDirections: this.showDirections,
                 setSelectedPlace: this.setSelectedPlace
               }}
             />

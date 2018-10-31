@@ -32,7 +32,8 @@ class SelectedListItem extends React.Component {
 
     render() {
         const {
-            recommendedPlaces
+            recommendedPlaces,
+            showDirections
         } = this.props.PlacesList;
 
         return (
@@ -52,7 +53,7 @@ class SelectedListItem extends React.Component {
                                 />
                                 <ListItemSecondaryAction>
                                     <IconButton aria-label="Comments">
-                                        <LocationOn />
+                                        <LocationOn onClick={() => showDirections(recommendedPlace)} />
                                     </IconButton>
                                 </ListItemSecondaryAction>
                             </ListItem>
