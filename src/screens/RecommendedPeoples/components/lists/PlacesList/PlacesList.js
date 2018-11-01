@@ -2,10 +2,11 @@ import React from 'react';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import Divider from '@material-ui/core/Divider';
 import LocationOn from '@material-ui/icons/LocationOn';
+import Directions from '@material-ui/icons/Directions';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
+import { ListItemIcon } from '@material-ui/core';
 
 class SelectedListItem extends React.Component {
     state = {
@@ -46,20 +47,21 @@ class SelectedListItem extends React.Component {
                                 selected={this.state.selectedIndex === index}
                                 onClick={() => this.handleListItemClick(index, recommendedPlace)}
                             >
+                                <ListItemIcon>
+                                    <LocationOn />
+                                </ListItemIcon>
                                 <ListItemText
-                                    primary={`${recommendedPlace.venue ? recommendedPlace.venue.name : recommendedPlace.name}
-                                                - ${recommendedPlace.venue ? recommendedPlace.venue.location.crossStreet || '' : ''}
-                                                ${recommendedPlace.venue ? recommendedPlace.venue.location.address : recommendedPlace.location.address || ''}`}
+                                    primary={recommendedPlace.venue ? recommendedPlace.venue.name : recommendedPlace.name}
+                                    secondary={recommendedPlace.venue ? recommendedPlace.venue.location.address : recommendedPlace.location.address || ''}            
                                 />
                                 <ListItemSecondaryAction>
                                     <IconButton aria-label="Comments">
-                                        <LocationOn onClick={() => showDirections(recommendedPlace)} />
+                                        <Directions onClick={() => showDirections(recommendedPlace)} />
                                     </IconButton>
                                 </ListItemSecondaryAction>
                             </ListItem>
                         )
                     }
-                    <Divider />
                 </List>
             </div>
         );

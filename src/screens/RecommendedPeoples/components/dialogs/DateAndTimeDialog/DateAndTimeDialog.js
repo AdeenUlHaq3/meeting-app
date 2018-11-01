@@ -57,7 +57,8 @@ class DateAndTimeDialog extends React.Component {
         const {
             classes,
             selectedPlace,
-            isDateAndTimeDialog
+            isDateAndTimeDialog,
+            closeDateAndTimeDialog
         } = this.props.DateAndTimeDialog;
 
         const {
@@ -69,7 +70,7 @@ class DateAndTimeDialog extends React.Component {
                 <Dialog
                     fullScreen={fullScreen}
                     open={isDateAndTimeDialog}
-                    onClose={this.handleClose}
+                    onClose={closeDateAndTimeDialog}
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description"
                 >

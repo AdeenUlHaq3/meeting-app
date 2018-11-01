@@ -30,7 +30,6 @@ const theme = createMuiTheme({
       dialogAction: {
         background: 'transparent',
         color: '#FE6B8B',
-        boxShadow: 'none'
       },
     },
     MuiButton: {
@@ -39,12 +38,10 @@ const theme = createMuiTheme({
         // Some CSS
         background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
         borderRadius: 0,
-        border: 0,
         color: 'white',
         height: 48,
         fontWeight: 'bold',
         padding: '0 30px',
-        boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
       },
     },
   },
@@ -74,6 +71,7 @@ class App extends Component {
   componentDidMount() {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
+        localStorage.setItem('uid', user.uid);
         this.setState({
           isUser: true
         });

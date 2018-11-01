@@ -29,30 +29,43 @@ function Transition(props) {
 
 class ShowDirections extends React.Component {
     state = {
-        
+
     }
 
     getDirections = () => {
+        const {
+            myLat,
+            myLng,
+            meetPlaceLat,
+            meetPlaceLng
+        } = this.props;
+        
         const DirectionsService = new google.maps.DirectionsService();
-
+        
         DirectionsService.route({
-            origin: new google.maps.LatLng(24.8812296, 67.0727269),
-            destination: new google.maps.LatLng(24.8861479, 67.0595196),
+            origin: new google.maps.LatLng(myLat, myLng),
+            destination: new google.maps.LatLng(meetPlaceLat, meetPlaceLng),
             travelMode: google.maps.TravelMode.DRIVING,
         }, (result, status) => {
             if (status === google.maps.DirectionsStatus.OK) {
                 this.setState({
                     directions: result,
                 });
-            } else {
+            } 
+            else
                 alert("Sorry! Can't calculate directions!")
-            }
         });
     };
 
     render() {
         const {
-            classes
+            myLat,
+            myLng,
+            isOpen,
+            onClose,
+            classes,
+            meetPlaceLat,
+            meetPlaceLng,
         } = this.props;
 
         const {
@@ -63,13 +76,12 @@ class ShowDirections extends React.Component {
             <div>
                 <Dialog
                     fullScreen
-                    open={true}
-                    onClose={this.handleClose}
+                    open={isOpen}
                     TransitionComponent={Transition}
                 >
                     <AppBar className={classes.appBar}>
                         <Toolbar>
-                            <IconButton color="inherit" onClick={this.handleClose} aria-label="Close">
+                            <IconButton color="inherit" onClick={onClose} aria-label="Close">
                                 <CloseIcon />
                             </IconButton>
                             <Typography variant="h6" color="inherit" className={classes.flex}>
@@ -81,6 +93,10 @@ class ShowDirections extends React.Component {
                         </Toolbar>
                     </AppBar>
                     <MapWithDirections
+                        myLat={myLat}
+                        myLng={myLng}
+                        meetPlaceLat={meetPlaceLat}
+                        meetPlaceLng={meetPlaceLng}
                         directions={directions}
                     />
                 </Dialog>

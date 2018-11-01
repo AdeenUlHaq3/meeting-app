@@ -20,7 +20,12 @@ const styles = {
 class MuiCard extends React.Component {
 
     render() {
-        const { recommendedUser } = this.props.MuiCard;
+        const {
+            onClickCheck,
+            onClickCross,
+            recommendedUser,
+        } = this.props.MuiCard;
+
         const {
             classes
         } = this.props;
@@ -44,7 +49,10 @@ class MuiCard extends React.Component {
                     alignItems="center">
 
                     <Grid item xs={2}>
-                        <IconButton aria-label="Add to favorites">
+                        <IconButton 
+                            aria-label="Add to favorites"
+                            onClick={onClickCross}
+                        >
                             <CloseIcon />
                         </IconButton>
                     </Grid>
@@ -61,7 +69,10 @@ class MuiCard extends React.Component {
                         </CardContent>
                     </Grid>
                     <Grid item xs={2}>
-                        <IconButton aria-label="Share">
+                        <IconButton
+                            aria-label="Share"
+                            onClick={onClickCheck}
+                        >
                             <CheckIcon />
                         </IconButton>
                     </Grid>

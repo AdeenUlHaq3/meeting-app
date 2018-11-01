@@ -7,12 +7,15 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import withMobileDialog from '@material-ui/core/withMobileDialog';
+import Divider from '@material-ui/core/Divider';
 
 import PlacesList from '../../lists/PlacesList/PlacesList';
+import ShowDirections from '../ShowDirections';
 
 class ScrollDialog extends React.Component {
 
   state = {
+    isShowDirectionsDialog: false,
     placeSearchTerm: '',
     recommendedPlace: []
   };
@@ -57,17 +60,33 @@ class ScrollDialog extends React.Component {
   }
 
   showDirections = (recommendedPlace) => {
-    const lat = recommendedPlace.venue ? recommendedPlace.venue.location.lat : recommendedPlace.location.lat;
-    const lng = recommendedPlace.venue ? recommendedPlace.venue.location.lng : recommendedPlace.location.lng;
+    const meetPlaceLat = recommendedPlace.venue ? recommendedPlace.venue.location.lat : recommendedPlace.location.lat;
+    const meetPlaceLng = recommendedPlace.venue ? recommendedPlace.venue.location.lng : recommendedPlace.location.lng;
+    
+    this.setState({
+      meetPlaceLat,
+      meetPlaceLng,
+      isShowDirectionsDialog: true
+    });
+  };
 
-  }
+  closeDirectionsDialog = () => {
+    this.setState({
+      isShowDirectionsDialog: false
+    });
+  };
 
   render() {
     const {
+      isShowDirectionsDialog,
+      meetPlaceLat,
+      meetPlaceLng,
       placeSearchTerm
     } = this.state;
 
     const {
+      myLat,
+      myLng,
       recommendedPlaces,
       isVenueDetailsDialog,
       closeVenueDetailsDialog,
@@ -81,6 +100,15 @@ class ScrollDialog extends React.Component {
 
     return (
       <div>
+        <ShowDirections
+          myLat={myLat}
+          myLng={myLng}
+          meetPlaceLat={meetPlaceLat}
+          meetPlaceLng={meetPlaceLng}
+          isOpen={isShowDirectionsDialog}
+          onClose={this.closeDirectionsDialog}
+        />
+
         <Dialog
           fullScreen={fullScreen}
           open={isVenueDetailsDialog}
@@ -90,7 +118,7 @@ class ScrollDialog extends React.Component {
           fullWidth={true}
           maxWidth={'md'}
         >
-          <DialogContent>
+          <DialogTitle id="scroll-dialog-title">
             <Grid container>
               <Grid item lg={12}>
                 <form onSubmit={this.handleSearch}>
@@ -119,7 +147,8 @@ class ScrollDialog extends React.Component {
                 </form>
               </Grid>
             </Grid>
-            <DialogTitle id="scroll-dialog-title">Recommended Places</DialogTitle>
+          </DialogTitle>
+          <DialogContent>
             <PlacesList
               PlacesList={{
                 recommendedPlaces,
@@ -128,6 +157,7 @@ class ScrollDialog extends React.Component {
               }}
             />
           </DialogContent>
+          <Divider />
           <DialogActions>
             <Button className={classes.button} onClick={setNearestPlaces}>
               Nearest Places

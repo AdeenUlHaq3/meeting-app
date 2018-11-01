@@ -20,8 +20,6 @@ import SendRequestSnackbar from '../snackbars/SendRequestSnackbar.js';
 
 const styles = theme => ({
     button: {
-        width: '100%',
-        float: 'left',
         background: 'transparent',
         color: '#FE6B8B',
         boxShadow: 'none',
@@ -48,7 +46,7 @@ class SwipeableCard extends React.Component {
 
     componentDidMount() {
         const myUId = firebase.auth().currentUser && firebase.auth().currentUser.uid;
-        
+
         firebase.database().ref(`Users/${myUId}`)
             .once('value', me => {
                 const myObj = me.val();
@@ -143,8 +141,8 @@ class SwipeableCard extends React.Component {
     closeVenueDetailsDialog = () => {
         this.setState({
             isVenueDetailsDialog: false
-        })
-    }
+        });
+    };
 
     searchPlaces = (placeSearchTerm) => {
         const {
@@ -189,11 +187,34 @@ class SwipeableCard extends React.Component {
         this.setState({
             isDateAndTimeDialog: false,
             isSnackbar: true
-        })
-    }
+        });
+    };
+
+    onClickCheck = (uid) => {
+        const{
+            removeCard
+        } = this.swipeCard;
+
+        const {
+            confirm
+        } = this;
+
+        removeCard();
+        confirm(uid);  
+    };
+
+    onClickCross = () => {
+        const {
+            removeCard
+        } = this.swipeCard;
+
+        removeCard();
+    };
 
     render() {
         const {
+            myLat,
+            myLng,
             recommendedUsers,
             recommendedPlaces,
             selectedPlace,
@@ -219,6 +240,8 @@ class SwipeableCard extends React.Component {
                 />
                 <VenueDetailsDialog
                     VenueDetailsDialog={{
+                        myLat,
+                        myLng,
                         classes,
                         isVenueDetailsDialog,
                         recommendedPlaces,
@@ -238,10 +261,16 @@ class SwipeableCard extends React.Component {
                         closeDateAndTimeDialog: this.closeDateAndTimeDialog
                     }}
                 />
-                <SendRequestSnackbar SendRequestSnackbar={{isSnackbar}} />
+                <SendRequestSnackbar SendRequestSnackbar={{ isSnackbar }} />
                 {
                     recommendedUsers.length !== 0 &&
-                    <Cards size={[500, 500]} cardSize={[300, 300]} onEnd={this.rejectUser} className='master-root'>
+                    <Cards
+                        size={[500, 500]}
+                        cardSize={[300, 300]}
+                        onEnd={this.rejectUser}
+                        className='master-root'
+                        ref={SwipeCards => this.swipeCard = SwipeCards}
+                    >
                         {
                             recommendedUsers.map(recommendedUser =>
                                 <CardForSwipe
@@ -249,7 +278,11 @@ class SwipeableCard extends React.Component {
                                     onSwipeLeft={this.rejectUser}
                                     onSwipeRight={() => this.confirm(recommendedUser.uid)}
                                 >
-                                    <MuiCard MuiCard={{ recommendedUser }} />
+                                    <MuiCard MuiCard={{
+                                        recommendedUser,
+                                        onClickCross: this.onClickCross,
+                                        onClickCheck: () => this.onClickCheck(recommendedUser.uid)
+                                    }} />
                                 </CardForSwipe>
                             )
                         }

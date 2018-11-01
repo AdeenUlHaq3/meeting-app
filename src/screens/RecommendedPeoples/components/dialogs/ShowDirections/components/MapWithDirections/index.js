@@ -8,16 +8,20 @@ const MapWithDirections = (props) =>
     containerElement={<div style={{ height: `100vh` }} />}
     mapElement={<div style={{ height: `100%` }} />}
     directions={props.directions}
+    myLat={props.myLat}
+    myLng={props.myLng}
+    meetPlaceLat={props.meetPlaceLat}
+    meetPlaceLng={props.meetPlaceLng}
   />
 
 
 const MyMapComponent = withScriptjs(withGoogleMap(props =>
   <GoogleMap
     defaultZoom={14}
-    center={{ lat: 24.8812296, lng: 67.0727269 }}
+    center={{ lat: props.myLat, lng: props.myLng }}
   >
-    <Marker position={{ lat: 24.8812296, lng: 67.0727269 }} />
-    <Marker position={{ lat: 24.8861479, lng: 67.0595196 }} />
+    <Marker position={{ lat: props.myLat, lng: props.myLng }} />
+    <Marker position={{ lat: props.meetPlaceLat, lng: props.meetPlaceLng }} />
 
     {
       props.directions
