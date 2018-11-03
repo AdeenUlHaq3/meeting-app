@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
@@ -47,8 +46,11 @@ const styles = theme => ({
   },
 });
 
-function DetailedExpansionPanel(props) {
-  const { classes } = props;
+const Meetings = (props) => {
+  const {
+    classes 
+  } = props;
+  
   return (
     <div className={classes.root}>
       <ExpansionPanel defaultExpanded>
@@ -87,8 +89,4 @@ function DetailedExpansionPanel(props) {
   );
 }
 
-DetailedExpansionPanel.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(styles)(DetailedExpansionPanel);
+export default withStyles(styles)(Meetings);

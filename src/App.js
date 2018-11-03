@@ -56,7 +56,7 @@ class App extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (this.state.isUser)
       if (prevState.isUser !== this.state.isUser)
-        firebase.database().ref(`Users/${firebase.auth().currentUser.uid}`)
+        firebase.database().ref(`Users/${localStorage.getItem('activeUId')}`)
           .once('value', snapshot => {
 
             const notifications = snapshot.val().notifications || [];
@@ -69,15 +69,12 @@ class App extends Component {
   };
 
   componentDidMount() {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        localStorage.setItem('uid', user.uid);
-        this.setState({
-          isUser: true
-        });
-        this.props.history.push('/dashboard');
-      };
-    });
+    if (localStorage.getItem('activeUId')) {
+      this.setState({
+        isUser: true
+      });
+      this.props.history.push('/dashboard');
+    }
   };
 
   activeUser = () => {
@@ -92,8 +89,12 @@ class App extends Component {
         this.setState({
           isUser: false
 
-        });
-        this.props.history.push('/');
+        })
+          .then(() => {
+            localStorage.removeItem('activeUId');
+            this.props.history.push('/');
+          })
+
       });
   }
 

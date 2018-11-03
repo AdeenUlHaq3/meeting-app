@@ -31,25 +31,44 @@ class DateAndTimeDialog extends React.Component {
             closeDateAndTimeDialog
         } = this.props.DateAndTimeDialog;
 
-        firebase.database().ref(`Users/${swappedUserId}`)
-            .once('value', snapshot => {
-                const notifications = snapshot.val().notifications || [];
-                const date = selectedDate.toLocaleDateString();
-                const time = selectedDate.toLocaleTimeString();
-                notifications.push({
+        const date = selectedDate.toLocaleDateString();
+        const time = selectedDate.toLocaleTimeString();
+
+        firebase.database().ref(`Users/${localStorage.getItem('activeUId')}`)
+            .once('value', mySnapshot => {
+                const meetings = mySnapshot.val().meetings || [];
+
+                meetings.push({
                     ...selectedPlace,
                     date,
                     time
                 });
 
-                firebase.database().ref(`Users/${swappedUserId}`)
+                firebase.database().ref(`Users/${localStorage.getItem('activeUId')}`)
                     .update({
-                        notifications
+                        meetings
                     })
                     .then(() => {
-                        closeDateAndTimeDialog();
-                    })
+                        firebase.database().ref(`Users/${swappedUserId}`)
+                            .once('value', snapshot => {
+                                const notifications = snapshot.val().notifications || [];
 
+                                notifications.push({
+                                    ...selectedPlace,
+                                    date,
+                                    time
+                                });
+
+                                firebase.database().ref(`Users/${swappedUserId}`)
+                                    .update({
+                                        notifications
+                                    })
+                                    .then(() => {
+                                        closeDateAndTimeDialog();
+                                    })
+
+                            });
+                    })
             });
     };
 

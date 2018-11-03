@@ -5,10 +5,11 @@ import { withRouter } from 'react-router-dom';
 import firebase from '../../config/firebase';
 
 function handleLogin(history, activeUser) {
-    var provider = new firebase.auth.FacebookAuthProvider();
+    let provider = new firebase.auth.FacebookAuthProvider();
     firebase.auth().signInWithPopup(provider).then(result => {
         const myUId = firebase.auth().currentUser.uid;
-        
+        localStorage.setItem('activeUId', myUId);
+
         firebase.database().ref(`Users/${myUId}`)
         .once('value', snapshot => {
             activeUser();
