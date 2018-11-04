@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import './App.css';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import store from './store';
 
 //Import Firebase Config
 import firebase from './config/firebase';
@@ -105,9 +107,11 @@ class App extends Component {
     } = this.state;
 
     return (
-      <MuiThemeProvider theme={theme}>
-        <Routes Routes={{ isUser, notifications, activeUser: this.activeUser, logOut: this.logOut }} />
-      </MuiThemeProvider>
+      <Provider store={store}>
+        <MuiThemeProvider theme={theme}>
+          <Routes Routes={{ isUser, notifications, activeUser: this.activeUser, logOut: this.logOut }} />
+        </MuiThemeProvider>
+      </Provider>
     );
   }
 }

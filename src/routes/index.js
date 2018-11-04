@@ -1,14 +1,14 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import AppBar from '../components/AppBar/AppBar';
-import NickNameAndPhone from '../screens/Profile/NickNameAndPhone/NickNameAndPhone';
-import ChooseImages from '../screens/Profile/ChooseImages/ChooseImages';
-import BeveragesAndMeetingDuration from '../screens/Profile/BeveragesAndMeetingDuration/BeveragesAndMeetingDuration';
-import SelectLocation from '../screens/Profile/SelectLocation/SelectLocation';
+import NickNameAndPhone from '../screens/Profile/NickNameAndPhone';
+import ChooseImages from '../screens/Profile/ChooseImages';
+import BeveragesAndMeetingDuration from '../screens/Profile/BeveragesAndMeetingDuration';
+import SelectLocation from '../screens/Profile/SelectLocation';
 import DashBoard from '../screens/DashBoard/DashBoard';
 import RecommendedPeoples from '../screens/RecommendedPeoples/RecommendedPeoples';
 import Notifications from '../screens/Notifications/Notifications';
-import Steps from '../screens/Profile/Steps';
+import Steps from '../screens/Profile';
 
 export default (props) => {
     const {

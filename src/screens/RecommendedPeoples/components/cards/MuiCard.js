@@ -49,7 +49,7 @@ class MuiCard extends React.Component {
                     alignItems="center">
 
                     <Grid item xs={2}>
-                        <IconButton 
+                        <IconButton
                             aria-label="Add to favorites"
                             onClick={onClickCross}
                         >

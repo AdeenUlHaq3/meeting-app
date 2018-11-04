@@ -6,9 +6,16 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
+//Import components
+import NickNameAndPhone from './NickNameAndPhone';
+import ChooseImages from './ChooseImages';
+import BeveragesAndMeetingDuration from './BeveragesAndMeetingDuration';
+import SelectLocation from './SelectLocation';
+
 const styles = theme => ({
   root: {
-    width: '90%',
+    width: '100%',
+    marginTop: '10px'
   },
   backButton: {
     marginRight: theme.spacing.unit,
@@ -20,23 +27,25 @@ const styles = theme => ({
 });
 
 function getSteps() {
-  return ['Select master blaster campaign settings', 'Create an ad group', 'Create an ad'];
+  return ['Set Nickname & Phone', 'Choose Images', 'Choose Beverages And Meeting Duration', 'Choose Your Location'];
 }
 
 function getStepContent(stepIndex) {
   switch (stepIndex) {
     case 0:
-      return 'Select campaign settings...';
+      return <NickNameAndPhone />;
     case 1:
-      return 'What is an ad group anyways?';
+      return <ChooseImages />;
     case 2:
-      return 'This is the bit I really care about!';
+      return <BeveragesAndMeetingDuration />;
+    case 3:
+      return <SelectLocation />
     default:
-      return 'Uknown stepIndex';
+      return 'Unknown Step Index';
   }
 }
 
-class HorizontalLabelPositionBelowStepper extends React.Component {
+class ProfileCompletionSteps extends React.Component {
   state = {
     activeStep: 0,
   };
@@ -101,7 +110,7 @@ class HorizontalLabelPositionBelowStepper extends React.Component {
         </div>
       </div>
     );
-  }
+  } 
 }
 
-export default withStyles(styles)(HorizontalLabelPositionBelowStepper);
+export default withStyles(styles)(ProfileCompletionSteps);
