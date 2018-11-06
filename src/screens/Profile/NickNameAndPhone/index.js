@@ -2,6 +2,7 @@ import React from 'react';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
 
 // JSS
 const styles = theme => ({
@@ -103,4 +104,17 @@ class NickNameAndPhone extends React.Component {
     }
 }
 
-export default withStyles(styles)(NickNameAndPhone);
+const mapDispatchToProps = (dispatch) => {
+    return {
+
+    };
+};
+
+const mapStateToProps = (state) => {
+    return{
+        nickName: state.nickNameAndPhoneReducer.nickName,
+        phone: state.nickNameAndPhoneReducer.phone
+    };
+};
+
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(NickNameAndPhone));
