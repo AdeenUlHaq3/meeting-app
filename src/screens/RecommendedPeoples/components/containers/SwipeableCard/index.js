@@ -1,22 +1,22 @@
 import React from 'react';
 import Cards, { Card as CardForSwipe } from 'react-swipe-deck';
-import firebase from '../../../../config/firebase';
+import firebase from '../../../../../config/Firebase';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import GeoFire from 'geofire';
 import { withStyles } from '@material-ui/core/styles';
 import axios from 'axios';
-import MuiCard from './MuiCard';
+import MuiCard from './component/card/MUICard';
 
 //Import Constants
-import { BASE_URL, CLIENT_ID, CLIENT_SECRET, VERSION } from '../../../../constants/fourSquare';
+import { BASE_URL, CLIENT_ID, CLIENT_SECRET, VERSION } from '../../../../../constants/FourSquare';
 
 //Import Dialogs
-import ConfirmationDialog from '../dialogs/ConfirmationDialog/ConfirmationDialog';
-import VenueDetailsDialog from '../dialogs/VenueDetailsDialog/VenueDetailsDialog';
-import DateAndTimeDialog from '../dialogs/DateAndTimeDialog/DateAndTimeDialog';
+import ConfirmationDialog from '../../dialogs/ConfirmationDialog';
+import VenueDetailsDialog from '../../dialogs/VenueDetailsDialog';
+import DateAndTimeDialog from '../../dialogs/DateAndTimeDialog';
 
 //Import Snackbar
-import SendRequestSnackbar from '../snackbars/SendRequestSnackbar.js';
+import SendRequestSnackbar from '../../snackbars/SendRequestSnackbar.js';
 
 const styles = theme => ({
     button: {

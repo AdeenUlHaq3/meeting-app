@@ -7,7 +7,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import withMobileDialog from '@material-ui/core/withMobileDialog';
 import DateAndTime from './components/DateAndTime';
 
-import firebase from '../../../../../config/firebase';
+import firebase from '../../../../../config/Firebase';
 
 class DateAndTimeDialog extends React.Component {
     state = {

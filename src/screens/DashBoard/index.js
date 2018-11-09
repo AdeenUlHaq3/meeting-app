@@ -5,7 +5,7 @@ import { Typography } from '@material-ui/core';
 import PersonAdd from '@material-ui/icons/PersonAdd';
 
 //Import Firebase
-import firebase from '../../config/firebase';
+import firebase from '../../config/Firebase';
 
 //Import Components
 import Meetings from './components/lists/Meetings';

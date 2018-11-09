@@ -1,14 +1,14 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import AppBar from '../components/AppBar/AppBar';
+import AppBar from '../components/AppBar';
 import NickNameAndPhone from '../screens/Profile/NickNameAndPhone';
 import ChooseImages from '../screens/Profile/ChooseImages';
 import BeveragesAndMeetingDuration from '../screens/Profile/BeveragesAndMeetingDuration';
 import SelectLocation from '../screens/Profile/SelectLocation';
-import DashBoard from '../screens/DashBoard/DashBoard';
-import RecommendedPeoples from '../screens/RecommendedPeoples/RecommendedPeoples';
-import Notifications from '../screens/Notifications/Notifications';
-import Steps from '../screens/Profile';
+import DashBoard from '../screens/DashBoard';
+import RecommendedPeoples from '../screens/RecommendedPeoples';
+import Notifications from '../screens/Notifications';
+// import Steps from '../screens/Profile';
 
 export default (props) => {
     const {
@@ -28,7 +28,7 @@ export default (props) => {
             <Route path='/dashboard' component={DashBoard} />
             <Route path='/recommendedPeoples' component={RecommendedPeoples} />
             <Route path='/notifications'  render={(props) => <Notifications {...props} Notifications={{ notifications }} />} />
-            <Route path='/' component={Steps} />
+            {/* <Route path='/' component={Steps} /> */}
         </div>
     );
 };

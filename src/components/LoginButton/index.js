@@ -2,7 +2,7 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
-import firebase from '../../config/firebase';
+import firebase from '../../config/Firebase';
 
 function handleLogin(history, activeUser) {
     let provider = new firebase.auth.FacebookAuthProvider();

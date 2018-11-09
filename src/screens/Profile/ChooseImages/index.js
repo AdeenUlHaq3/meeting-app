@@ -1,5 +1,5 @@
 import React from 'react';
-import firebase from '../../../config/firebase';
+import firebase from '../../../config/Firebase';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';

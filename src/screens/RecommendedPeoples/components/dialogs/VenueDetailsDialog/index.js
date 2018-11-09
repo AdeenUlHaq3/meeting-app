@@ -9,7 +9,7 @@ import TextField from '@material-ui/core/TextField';
 import withMobileDialog from '@material-ui/core/withMobileDialog';
 import Divider from '@material-ui/core/Divider';
 
-import PlacesList from '../../lists/PlacesList/PlacesList';
+import PlacesList from '../../lists/PlacesList';
 import ShowDirections from '../ShowDirections';
 
 class ScrollDialog extends React.Component {

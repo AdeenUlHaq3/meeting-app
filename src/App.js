@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import store from './store';
 
 //Import Firebase Config
-import firebase from './config/firebase';
+import firebase from './config/Firebase';
 
 //Import Routes
 import Routes from './routes';

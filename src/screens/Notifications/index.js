@@ -1,5 +1,5 @@
 import React from 'react';
-import NotificationsList from './components/lists/NotificationsList';
+import NotificationsList from './components/lists/Notifications';
 
 class Notifications extends React.Component {
     render() {
