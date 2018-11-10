@@ -8,7 +8,7 @@ import PersonAdd from '@material-ui/icons/PersonAdd';
 import firebase from '../../config/Firebase';
 
 //Import Components
-import Meetings from './components/lists/Meetings';
+import MeetingsStatus from './components/tabs/MeetingsStatus';
 
 const styles = theme => ({
     fab: {
@@ -28,16 +28,57 @@ const styles = theme => ({
 
 class DashBoard extends React.Component {
     state = {
-        isMeetingList: false
+        isLoading: true,
+        isMeetingList: false,
+        meetings: {
+            accepted: [],
+            cancelled: [],
+            complicated: [],
+            done: [],
+            pending: []
+        }
     };
 
     componentDidMount() {
-        firebase.database().ref(`Users/${localStorage.getItem('activeUId')}`)
-            .once('value', user => {
-                if (user.val().meetings)
+        const activeUser = localStorage.getItem('activeUId');
+        
+        firebase.database().ref(`Users/${activeUser}`)
+        .once('value', user => {
+            if (user.val().meetings) {
+                const meetingsList = user.val().meetings;
+                const { meetings } = this.state;
+
+                    meetingsList.forEach(meeting => {
+                        switch(meeting.status) {
+                            case 'accepted':
+                                meetings.accepted.push(meeting);
+                                break;
+                            case 'cancelled':
+                                meetings.cancelled.push(meeting);
+                                break;
+                            case 'complicated':
+                                meetings.complicated.push(meeting);
+                                break;
+                            case 'done':
+                                meetings.done.push(meeting);
+                                break;
+                            case 'pending':
+                                meetings.pending.push(meeting);
+                                break;
+                            default:
+                                break;
+                        };
+                    });
+
                     this.setState({
+                        meetings,
                         isMeetingList: true
                     });
+                };
+
+                this.setState({
+                    isLoading: false
+                });
             });
     };
 
@@ -51,15 +92,28 @@ class DashBoard extends React.Component {
         } = this.props;
 
         const {
-            isMeetingList
+            meetings,
+            isLoading,
+            isMeetingList,
         } = this.state;
-
+        
         return (
             <div>
                 {
+                    isLoading
+                    ?
+                    <Typography
+                        variant='display1'
+                        className={`${classes.textCenter} ${classes.margin}`}
+                    >
+                        Loading...
+                    </Typography>
+                    :
                     isMeetingList
                     ?
-                    <Meetings />
+                    <MeetingsStatus
+                        lists={meetings}
+                    />
                     :
                     <Typography
                         variant='display1'

@@ -7,7 +7,6 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Chip from '@material-ui/core/Chip';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 
@@ -64,9 +63,6 @@ const Meetings = (props) => {
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className={classes.details}>
           <div className={classes.column} />
-          <div className={classes.column}>
-            <Chip label="Barbados" className={classes.chip} onDelete={() => {}} />
-          </div>
           <div className={classNames(classes.column, classes.helper)}>
             <Typography variant="caption">
               Select your destination of choice
@@ -80,7 +76,7 @@ const Meetings = (props) => {
         <Divider />
         <ExpansionPanelActions>
           <Button size="small">Cancel</Button>
-          <Button size="small" color="primary">
+          <Button size="small">
             Save
           </Button>
         </ExpansionPanelActions>

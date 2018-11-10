@@ -33,6 +33,7 @@ class DateAndTimeDialog extends React.Component {
 
         const date = selectedDate.toLocaleDateString();
         const time = selectedDate.toLocaleTimeString();
+        const status = 'pending';
 
         firebase.database().ref(`Users/${localStorage.getItem('activeUId')}`)
             .once('value', mySnapshot => {
@@ -41,7 +42,8 @@ class DateAndTimeDialog extends React.Component {
                 meetings.push({
                     ...selectedPlace,
                     date,
-                    time
+                    time,
+                    status
                 });
 
                 firebase.database().ref(`Users/${localStorage.getItem('activeUId')}`)
@@ -56,7 +58,8 @@ class DateAndTimeDialog extends React.Component {
                                 notifications.push({
                                     ...selectedPlace,
                                     date,
-                                    time
+                                    time,
+                                    status
                                 });
 
                                 firebase.database().ref(`Users/${swappedUserId}`)

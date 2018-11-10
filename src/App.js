@@ -47,6 +47,7 @@ const theme = createMuiTheme({
       },
     },
   },
+  shadows: Array(25).fill('none'), //['none']
 })
 
 class App extends Component {
