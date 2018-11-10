@@ -43,45 +43,76 @@ const styles = theme => ({
       textDecoration: 'underline',
     },
   },
+  button: {
+    background: 'transparent',
+    color: '#FE6B8B',
+    boxShadow: 'none',
+  }
 });
 
 const Meetings = (props) => {
+  let list = [];
+
   const {
-    classes 
+    value,
+    lists,
+    classes
   } = props;
-  
+
+  switch (value) {
+    case 0:
+      list = lists.accepted;
+      break;
+    case 1:
+      list = lists.cancelled;
+      break;
+    case 2:
+      list = lists.complicated;
+      break;
+    case 3:
+      list = lists.done;
+      break;
+    case 4:
+      list = lists.pending;
+      break;
+    default:
+      break;
+  }
+
   return (
-    <div className={classes.root}>
-      <ExpansionPanel defaultExpanded>
-        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-          <div className={classes.column}>
-            <Typography className={classes.heading}>Location</Typography>
-          </div>
-          <div className={classes.column}>
-            <Typography className={classes.secondaryHeading}>Select trip destination</Typography>
-          </div>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails className={classes.details}>
-          <div className={classes.column} />
-          <div className={classNames(classes.column, classes.helper)}>
-            <Typography variant="caption">
-              Select your destination of choice
+    list.map(item =>
+      <div className={classes.root}>
+        <ExpansionPanel>
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <div className={classes.column}>
+              <Typography className={classes.heading}>{item.address}</Typography>
+            </div>
+            <div className={classes.column}>
+              <Typography className={classes.secondaryHeading}>{item.status}</Typography>
+            </div>
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails className={classes.details}>
+            <div className={classes.column} />
+            <div className={classNames(classes.column, classes.helper)}>
+              <Typography variant="caption">
+                Select your destination of choice
               <br />
-              <a href="#sub-labels-and-columns" className={classes.link}>
-                Learn more
+                <a href="#sub-labels-and-columns" className={classes.link}>
+                  Learn more
               </a>
-            </Typography>
-          </div>
-        </ExpansionPanelDetails>
-        <Divider />
-        <ExpansionPanelActions>
-          <Button size="small">Cancel</Button>
-          <Button size="small">
-            Save
+              </Typography>
+            </div>
+          </ExpansionPanelDetails>
+          <ExpansionPanelActions>
+            <Button className={classes.button}>Cancel</Button>
+            <Button className={classes.button}>
+              Save
           </Button>
-        </ExpansionPanelActions>
-      </ExpansionPanel>
-    </div>
+          </ExpansionPanelActions>
+        </ExpansionPanel>
+        <Divider />
+      </div>
+    )
   );
 }
 
