@@ -3,7 +3,8 @@ import './App.css';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import store from './store';
+import { store, persistor } from './store';
+import { PersistGate } from 'redux-persist/integration/react';
 
 //Import Firebase Config
 import firebase from './config/Firebase';
@@ -109,9 +110,11 @@ class App extends Component {
 
     return (
       <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
         <MuiThemeProvider theme={theme}>
           <Routes Routes={{ isUser, notifications, activeUser: this.activeUser, logOut: this.logOut }} />
         </MuiThemeProvider>
+        </PersistGate>
       </Provider>
     );
   }

@@ -110,7 +110,7 @@ const Meetings = (props) => {
           </Button>
           </ExpansionPanelActions>
         </ExpansionPanel>
-        <Divider />
+        <Divider light={true} />
       </div>
     )
   );
