@@ -27,8 +27,11 @@ class DateAndTimeDialog extends React.Component {
         } = this.state;
 
         const {
+            closeDateAndTimeDialog,
             swappedUserId,
-            closeDateAndTimeDialog
+            swappedUserNickName,
+            swappedUserDisplayName,
+            swappedUserDisplayPic
         } = this.props.DateAndTimeDialog;
 
         const date = selectedDate.toLocaleDateString();
@@ -40,10 +43,13 @@ class DateAndTimeDialog extends React.Component {
                 const meetings = mySnapshot.val().meetings || [];
 
                 meetings.push({
-                    ...selectedPlace,
                     date,
                     time,
-                    status
+                    status,
+                    ...selectedPlace,
+                    swappedUserNickName,
+                    swappedUserDisplayName,
+                    swappedUserDisplayPic
                 });
 
                 firebase.database().ref(`Users/${localStorage.getItem('activeUId')}`)
@@ -56,10 +62,13 @@ class DateAndTimeDialog extends React.Component {
                                 const notifications = snapshot.val().notifications || [];
 
                                 notifications.push({
-                                    ...selectedPlace,
                                     date,
                                     time,
-                                    status
+                                    status,
+                                    ...selectedPlace,
+                                    swappedUserNickName,
+                                    swappedUserDisplayName,
+                                    swappedUserDisplayPic
                                 });
 
                                 firebase.database().ref(`Users/${swappedUserId}`)

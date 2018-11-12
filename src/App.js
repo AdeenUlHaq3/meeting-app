@@ -92,13 +92,10 @@ class App extends Component {
       .then(() => {
         this.setState({
           isUser: false
-
-        })
-          .then(() => {
-            localStorage.removeItem('activeUId');
-            this.props.history.push('/');
-          })
-
+        });
+        
+        localStorage.removeItem('activeUId');
+        this.props.history.push('/');
       });
   }
 
@@ -111,9 +108,9 @@ class App extends Component {
     return (
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-        <MuiThemeProvider theme={theme}>
-          <Routes Routes={{ isUser, notifications, activeUser: this.activeUser, logOut: this.logOut }} />
-        </MuiThemeProvider>
+          <MuiThemeProvider theme={theme}>
+            <Routes Routes={{ isUser, notifications, activeUser: this.activeUser, logOut: this.logOut }} />
+          </MuiThemeProvider>
         </PersistGate>
       </Provider>
     );

@@ -38,6 +38,9 @@ class SwipeableCard extends React.Component {
         recommendedPlaces: [],
         selectedPlace: [],
         swappedUserId: '',
+        swappedUserNickName: '',
+        swappedUserDisplayName: '',
+        swappedUserDisplayPic: '',
         isConfirmDialog: false,
         isVenueDetailsDialog: false,
         isDateAndTimeDialog: false,
@@ -99,12 +102,15 @@ class SwipeableCard extends React.Component {
             });
     }
 
-    confirm = (uid) => {
+    confirm = (swappedUser) => {
         this.setState({
             isConfirmDialog: true,
-            swappedUserId: uid
-        })
-    }
+            swappedUserId: swappedUser.uid,
+            swappedUserNickName: swappedUser.nickName,
+            swappedUserDisplayName: swappedUser.displayName,
+            swappedUserDisplayPic: swappedUser.displayPic
+        });
+    };
 
     rejectUser = () => {
 
@@ -190,8 +196,8 @@ class SwipeableCard extends React.Component {
         });
     };
 
-    onClickCheck = (uid) => {
-        const{
+    onClickCheck = (swappedUser) => {
+        const {
             removeCard
         } = this.swipeCard;
 
@@ -200,7 +206,7 @@ class SwipeableCard extends React.Component {
         } = this;
 
         removeCard();
-        confirm(uid);  
+        confirm(swappedUser.uid);
     };
 
     onClickCross = () => {
@@ -219,6 +225,9 @@ class SwipeableCard extends React.Component {
             recommendedPlaces,
             selectedPlace,
             swappedUserId,
+            swappedUserNickName,
+            swappedUserDisplayName,
+            swappedUserDisplayPic,
             isConfirmDialog,
             isVenueDetailsDialog,
             isDateAndTimeDialog,
@@ -228,7 +237,7 @@ class SwipeableCard extends React.Component {
         const {
             classes
         } = this.props;
-
+        
         return (
             <div>
                 <ConfirmationDialog
@@ -256,12 +265,15 @@ class SwipeableCard extends React.Component {
                         classes,
                         selectedPlace,
                         swappedUserId,
+                        swappedUserNickName,
+                        swappedUserDisplayName,
+                        swappedUserDisplayPic,
                         isDateAndTimeDialog,
                         isSnackbar,
                         closeDateAndTimeDialog: this.closeDateAndTimeDialog
                     }}
                 />
-                <SendRequestSnackbar SendRequestSnackbar={{ isSnackbar }} />
+                {/* <SendRequestSnackbar SendRequestSnackbar={{ isSnackbar }} /> */}
                 {
                     recommendedUsers.length !== 0 &&
                     <Cards
@@ -276,12 +288,12 @@ class SwipeableCard extends React.Component {
                                 <CardForSwipe
                                     key={recommendedUser.nickName}
                                     onSwipeLeft={this.rejectUser}
-                                    onSwipeRight={() => this.confirm(recommendedUser.uid)}
+                                    onSwipeRight={() => this.confirm(recommendedUser)}
                                 >
                                     <MuiCard MuiCard={{
                                         recommendedUser,
                                         onClickCross: this.onClickCross,
-                                        onClickCheck: () => this.onClickCheck(recommendedUser.uid)
+                                        onClickCheck: () => this.onClickCheck(recommendedUser)
                                     }} />
                                 </CardForSwipe>
                             )

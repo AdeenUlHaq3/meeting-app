@@ -13,12 +13,14 @@ function handleLogin(history, activeUser) {
         firebase.database().ref(`Users/${myUId}`)
         .once('value', snapshot => {
             activeUser();
-
+            console.log(result.user.photoURL);
+            
             if (snapshot.val())
                 return history.push('/dashboard');
 
             history.push('/profile/nickNameAndPhone', {
                 displayName: result.user.displayName,
+                displayPic: result.user.photoURL
             });
         });
     })

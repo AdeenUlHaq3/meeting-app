@@ -104,12 +104,6 @@ class NickNameAndPhone extends React.Component {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-
-    };
-};
-
 const mapStateToProps = (state) => {
     return{
         nickName: state.nickNameAndPhoneReducer.nickName,
@@ -117,4 +111,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(NickNameAndPhone));
+export default withStyles(styles)(connect(mapStateToProps, null)(NickNameAndPhone));
