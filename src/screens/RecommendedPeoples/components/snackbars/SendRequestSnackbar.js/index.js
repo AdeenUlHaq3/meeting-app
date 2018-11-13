@@ -11,24 +11,14 @@ const styles = theme => ({
 });
 
 class SimpleSnackbar extends React.Component {
-    state = {
-        open: true
-    };
-
-    handleClose = () => {
-        this.setState({
-            open: false
-        });
-    };
-
     render() {
-        const { classes } = this.props;
-
-        // const {
-        //     isSnackBar
-        // } = this.props.SendRequestSnackbar;
-        // console.log(this.props);
-
+        const {
+            classes,
+            isSnackBar,
+            closeSnackBar
+        } = this.props;
+        console.log(isSnackBar);
+        
         return (
             <div>
                 <Snackbar
@@ -36,20 +26,20 @@ class SimpleSnackbar extends React.Component {
                         vertical: 'bottom',
                         horizontal: 'left',
                     }}
-                    open={this.state.open}
+                    open={isSnackBar}
                     autoHideDuration={3000}
-                    onClose={this.handleClose}
+                    onClose={closeSnackBar}
                     ContentProps={{
                         'aria-describedby': 'message-id',
                     }}
-                    message={<span id="message-id">Note archived</span>}
+                    message={<span id="message-id">Request Send</span>}
                     action={[
                         <IconButton
                             key="close"
                             aria-label="Close"
                             color="inherit"
                             className={classes.close}
-                            onClick={this.handleClose}
+                            onClick={closeSnackBar}
                         >
                             <CloseIcon />
                         </IconButton>,

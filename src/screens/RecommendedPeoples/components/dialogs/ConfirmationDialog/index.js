@@ -11,10 +11,10 @@ class ConfirmationDialog extends React.Component {
 
   render() {
     const {
-      isConfirmDialog,
-      closeConfirmDialog,
+      open,
+      close,
       classes
-    } = this.props.ConfirmationDialog;
+    } = this.props;
 
     const {
       fullScreen
@@ -24,8 +24,8 @@ class ConfirmationDialog extends React.Component {
       <div>
         <Dialog
           fullScreen={fullScreen}
-          open={isConfirmDialog}
-          onClose={() => closeConfirmDialog(false)}
+          open={open}
+          onClose={() => close(false)}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
@@ -36,10 +36,10 @@ class ConfirmationDialog extends React.Component {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button className={classes.button} onClick={() => closeConfirmDialog(false)}>
+            <Button className={classes.button} onClick={() => close(false)}>
               No
             </Button>
-            <Button className={classes.button} onClick={() => closeConfirmDialog(true)} autoFocus>
+            <Button className={classes.button} onClick={() => close(true)} autoFocus>
               Yes
             </Button>
           </DialogActions>

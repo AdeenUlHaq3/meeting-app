@@ -206,7 +206,7 @@ class SwipeableCard extends React.Component {
         } = this;
 
         removeCard();
-        confirm(swappedUser.uid);
+        confirm(swappedUser);
     };
 
     onClickCross = () => {
@@ -215,6 +215,12 @@ class SwipeableCard extends React.Component {
         } = this.swipeCard;
 
         removeCard();
+    };
+
+    closeSnackBar = () => {
+        this.setState({
+            isSnackbar: false
+        });
     };
 
     render() {
@@ -237,15 +243,13 @@ class SwipeableCard extends React.Component {
         const {
             classes
         } = this.props;
-        
+
         return (
             <div>
                 <ConfirmationDialog
-                    ConfirmationDialog={{
-                        classes,
-                        isConfirmDialog,
-                        closeConfirmDialog: this.closeConfirmDialog
-                    }}
+                    classes={classes}
+                    open={isConfirmDialog}
+                    close={this.closeConfirmDialog}
                 />
                 <VenueDetailsDialog
                     VenueDetailsDialog={{
@@ -261,19 +265,20 @@ class SwipeableCard extends React.Component {
                     }}
                 />
                 <DateAndTimeDialog
-                    DateAndTimeDialog={{
-                        classes,
-                        selectedPlace,
-                        swappedUserId,
-                        swappedUserNickName,
-                        swappedUserDisplayName,
-                        swappedUserDisplayPic,
-                        isDateAndTimeDialog,
-                        isSnackbar,
-                        closeDateAndTimeDialog: this.closeDateAndTimeDialog
-                    }}
+                    classes={classes}
+                    selectedPlace={selectedPlace}
+                    swappedUserId={swappedUserId}
+                    nickName={swappedUserNickName}
+                    displayName={swappedUserDisplayName}
+                    displayPic={swappedUserDisplayPic}
+                    isDateAndTimeDialog={isDateAndTimeDialog}
+                    isSnackbar={isSnackbar}
+                    closeSnackBar={this.closeSnackBar}
+                    closeDateAndTimeDialog={this.closeDateAndTimeDialog}
                 />
-                {/* <SendRequestSnackbar SendRequestSnackbar={{ isSnackbar }} /> */}
+                <SendRequestSnackbar
+                    isSnackbar={isSnackbar}
+                />
                 {
                     recommendedUsers.length !== 0 &&
                     <Cards

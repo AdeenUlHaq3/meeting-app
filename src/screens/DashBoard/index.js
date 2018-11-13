@@ -1,7 +1,6 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
 import PersonAdd from '@material-ui/icons/PersonAdd';
 
 //Import Firebase
@@ -18,18 +17,11 @@ const styles = theme => ({
         boxShadow: 'none',
         color: '#fff'
     },
-    margin: {
-        marginTop: theme.spacing.unit * 2
-    },
-    textCenter: {
-        textAlign: 'center',
-    },
 });
 
 class DashBoard extends React.Component {
     state = {
         isLoading: true,
-        isMeetingList: false,
         meetings: {
             accepted: [],
             cancelled: [],
@@ -71,8 +63,7 @@ class DashBoard extends React.Component {
                     });
 
                     this.setState({
-                        meetings,
-                        isMeetingList: true
+                        meetings
                     });
                 };
 
@@ -93,36 +84,15 @@ class DashBoard extends React.Component {
 
         const {
             meetings,
-            isLoading,
-            isMeetingList,
+            isLoading
         } = this.state;
         
         return (
             <div>
-                {
-                    isLoading
-                    ?
-                    <Typography
-                        variant='display1'
-                        className={`${classes.textCenter} ${classes.margin}`}
-                    >
-                        Loading...
-                    </Typography>
-                    :
-                    isMeetingList
-                    ?
-                    <MeetingsStatus
+                <MeetingsStatus
+                        Loading={isLoading}
                         lists={meetings}
-                    />
-                    :
-                    <Typography
-                        variant='display1'
-                        className={`${classes.textCenter} ${classes.margin}`}
-                    >
-                        No meetings yet.
-                    </Typography>
-                }
-
+                />
                 <Button
                     variant="fab"
                     aria-label="Delete"

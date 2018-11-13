@@ -1,11 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import Avatar from '@material-ui/core/Avatar';
-import Label from '@material-ui/icons/Label';
+
+//Import Moment
+import moment from 'moment';
 
 const styles = theme => ({
   root: {
@@ -14,29 +14,25 @@ const styles = theme => ({
   },
 });
 
-function NotificationsList(props) {
+const NotificationsList = (props) => {
   const { classes } = props;
   
   const {
+    showDialog,
     notification
-  } = props.NotificationsList;
+  } = props;
 
   return (
     <div className={classes.root}>
       <List>
-        <ListItem>
-          <Avatar>
-            <Label />
-          </Avatar>
-          <ListItemText primary={`${notification.venue}, ${notification.address}`} secondary={`${notification.date} | ${notification.time}`} />
+        <ListItem onClick={() => showDialog(notification)}>
+          <img src={notification.displayPic} alt='displayPic' />
+          <ListItemText primary={`${notification.displayName} (${notification.nickName}) wants to meet you at 
+          ${notification.venue}, ${notification.address}`} secondary={`On ${moment(new Date(`${notification.date}`)).calendar()} at sharp ${notification.time}`} />
         </ListItem>
       </List>
     </div>
   );
 }
-
-NotificationsList.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
 
 export default withStyles(styles)(NotificationsList);

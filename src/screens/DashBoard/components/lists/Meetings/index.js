@@ -7,16 +7,20 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Divider from '@material-ui/core/Divider';
+import LocationOn from '@material-ui/icons/LocationOn';
+
+//Import Moment
+import moment from 'moment';
 
 const styles = theme => ({
   root: {
     width: '100%',
   },
-  heading: {
-    fontSize: theme.typography.pxToRem(15),
-  },
   secondaryHeading: {
     fontSize: theme.typography.pxToRem(15),
+    color: theme.palette.text.secondary,
+  },
+  secondaryText: {
     color: theme.palette.text.secondary,
   },
   icon: {
@@ -45,7 +49,16 @@ const styles = theme => ({
     background: 'transparent',
     color: '#FE6B8B',
     boxShadow: 'none',
-  }
+  },
+  round: {
+    borderRadius: '50%',
+  },
+  margin: {
+      marginTop: theme.spacing.unit * 2
+  },
+  textCenter: {
+      textAlign: 'center',
+  },
 });
 
 const Meetings = (props) => {
@@ -54,7 +67,8 @@ const Meetings = (props) => {
   const {
     value,
     lists,
-    classes
+    classes,
+    Loading
   } = props;
 
   switch (value) {
@@ -78,12 +92,24 @@ const Meetings = (props) => {
   }
 
   return (
+    Loading
+    ?
+    <Typography
+        variant='display1'
+        className={`${classes.textCenter} ${classes.margin}`}
+    >
+        Loading...
+    </Typography>
+    :
+    list.length ?
     list.map(item =>
       <div className={classes.root}>
         <ExpansionPanel>
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <img src={item.displayPic} className={classes.round} alt='Fb Pic' />&nbsp;
             <div className={classes.column}>
-              <Typography className={classes.heading}>{item.displayName} ({item.nickName})</Typography>
+              <Typography className={classes.secondaryHeading}>{item.displayName} ({item.nickName})</Typography>
+              <Typography className={classes.secondaryText} variant='caption'>{moment(`${item.requestDate} ${item.requestTime}`, "MM/DD/YYYY HH:mm:ss a").fromNow()}</Typography>
             </div>
             <div className={classes.column}>
               <Typography className={classes.secondaryHeading}>status: {item.status}</Typography>
@@ -91,8 +117,12 @@ const Meetings = (props) => {
           </ExpansionPanelSummary>
           <ExpansionPanelDetails className={classes.details}>
             <div className={classNames(classes.column, classes.helper)}>
+              <LocationOn />
               <Typography variant="caption">
-                Select your destination of choice
+                At {item.address}
+              </Typography>
+              <Typography variant="caption">
+                {item.date} | {item.time}
               </Typography>
             </div>
           </ExpansionPanelDetails>
@@ -100,6 +130,13 @@ const Meetings = (props) => {
         <Divider light={true} />
       </div>
     )
+    :
+    <Typography
+        variant='display1'
+        className={`${classes.textCenter} ${classes.margin}`}
+    >
+        No meetings yet.
+    </Typography>
   );
 }
 

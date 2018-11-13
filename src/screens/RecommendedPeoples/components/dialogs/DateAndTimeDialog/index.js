@@ -29,10 +29,10 @@ class DateAndTimeDialog extends React.Component {
         const {
             closeDateAndTimeDialog,
             swappedUserId,
-            swappedUserNickName,
-            swappedUserDisplayName,
-            swappedUserDisplayPic
-        } = this.props.DateAndTimeDialog;
+            nickName,
+            displayName,
+            displayPic
+        } = this.props;
 
         const date = selectedDate.toLocaleDateString();
         const time = selectedDate.toLocaleTimeString();
@@ -47,9 +47,11 @@ class DateAndTimeDialog extends React.Component {
                     time,
                     status,
                     ...selectedPlace,
-                    swappedUserNickName,
-                    swappedUserDisplayName,
-                    swappedUserDisplayPic
+                    nickName,
+                    displayName,
+                    displayPic,
+                    requestDate: new Date().toLocaleDateString(),
+                    requestTime: new Date().toLocaleTimeString()
                 });
 
                 firebase.database().ref(`Users/${localStorage.getItem('activeUId')}`)
@@ -66,9 +68,11 @@ class DateAndTimeDialog extends React.Component {
                                     time,
                                     status,
                                     ...selectedPlace,
-                                    swappedUserNickName,
-                                    swappedUserDisplayName,
-                                    swappedUserDisplayPic
+                                    nickName,
+                                    displayName,
+                                    displayPic,
+                                    notificationDate: new Date().toLocaleDateString(),
+                                    notificationTime: new Date().toLocaleTimeString()
                                 });
 
                                 firebase.database().ref(`Users/${swappedUserId}`)
@@ -90,12 +94,12 @@ class DateAndTimeDialog extends React.Component {
             selectedPlace,
             isDateAndTimeDialog,
             closeDateAndTimeDialog
-        } = this.props.DateAndTimeDialog;
+        } = this.props;
 
         const {
             fullScreen
         } = this.props;
-
+        
         return (
             <form>
                 <Dialog
