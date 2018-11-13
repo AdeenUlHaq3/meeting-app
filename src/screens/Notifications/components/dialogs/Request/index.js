@@ -2,11 +2,11 @@ import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import withMobileDialog from '@material-ui/core/withMobileDialog';
 import LocationOn from '@material-ui/icons/LocationOn';
 import { withStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
+import { Typography, DialogActions } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 
 //Import Moment
 import moment from 'moment';
@@ -19,12 +19,19 @@ const styles = {
         display: 'inline',
         float: 'left'
     },
+    center: {
+        textAlign: 'center'
+    },
     name: {
         color: '#FE6B8B',
-        textAlign: 'center'
     },
     inline: {
         display: 'inline'
+    },
+    button: {
+        background: 'transparent',
+        boxShadow: 'none',
+        color: '#FE6B8B'
     }
 };
 
@@ -50,11 +57,14 @@ class RequestDialog extends React.Component {
                 >
                     <img className={classes.avatar} src={request.displayPic} alt='Avatar' />
                     <img className={classes.avatar} src={request.displayPic} alt='Avatar' />
-                    <DialogTitle>
-                        <p className={classes.name}>{request.displayName}</p>
-                    </DialogTitle>
-                    <DialogContent>
-                        <DialogContentText>
+                    <DialogContent className={classes.center}>
+                    <Typography 
+                        variant='h6'
+                        className={classes.name}
+                    >
+                        {request.displayName}
+                    </Typography>
+                    <DialogContentText>
                         <LocationOn className={classes.inline} />
                         <Typography 
                             className={classes.inline} 
@@ -65,10 +75,20 @@ class RequestDialog extends React.Component {
                         <Typography
                             variant='caption'
                         >
+                            Date: {request.date}<br/>
+                            Time: {request.time}<br/>
                             {moment(request.date).fromNow()}
                         </Typography>
                         </DialogContentText>
                     </DialogContent>
+                    <DialogActions>
+                            <Button className={classes.button} onClick={() => close(false)}>
+                            Cancel
+                            </Button>
+                            <Button className={classes.button} onClick={() => close(true)} autoFocus>
+                            Confirm
+                            </Button>
+                        </DialogActions>
                 </Dialog>
             </div>
         );
