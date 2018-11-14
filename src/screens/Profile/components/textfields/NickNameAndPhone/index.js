@@ -1,22 +1,16 @@
 import React from 'react';
-import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+import { TextValidator } from 'react-material-ui-form-validator';
 
 const NickNameAndPhone = (props) => {
     const {
         classes,
         phoneNo,
         nickName,
-        handleChange,
-        handleSubmit
+        handleChange
     } = props;
 
     return (
-        <ValidatorForm
-            className={classes.form}
-            ref="form"
-            onSubmit={handleSubmit}
-            onError={errors => console.log(errors)}
-        >
+        <div>
             <TextValidator
                 label="Nick Name"
                 name="nickName"
@@ -37,8 +31,7 @@ const NickNameAndPhone = (props) => {
                 errorMessages={['Type Mismatch']}
                 margin='normal'
             />
-            {props.children}
-        </ValidatorForm>
+        </div>
     );
 }
 export default NickNameAndPhone;

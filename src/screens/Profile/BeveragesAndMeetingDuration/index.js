@@ -1,14 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+
+//Import Components
+import Beverages from '../components/checkboxes/Beverages';
+import MeetingDuration from '../components/checkboxes/MeetingDuration';
 
 const styles = theme => ({
   formControl: {
@@ -53,71 +50,38 @@ class BeveragesAndMeetingDuration extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { coffee, juice, cocktail, twentyMin, sixtyMin, oneTwentyMin } = this.state;
+    
+    const { 
+      coffee, 
+      juice, 
+      cocktail, 
+      twentyMin, 
+      sixtyMin, 
+      oneTwentyMin 
+    } = this.state;
+
     const drinkError = Object.values(this.state).filter(v => v[2] === 'drink' && v[0]).length <= 0;
     const durationError = Object.values(this.state).filter(v => v[2] === 'duration' && v[0]).length <= 0;
     
     return (
       <form onSubmit={this.handleNext}>
       <Grid container>
-        <FormControl required error={drinkError} component="fieldset" className={classes.formControl}>
-          <FormLabel component="legend">Select Drinks</FormLabel>
-          <FormGroup>
-            <FormControlLabel
-              control={
-                <Checkbox name='coffee' checked={coffee[0]} onChange={(e) => this.handleChange(e, 'drink')} value="coffee" />
-              }
-              label="Coffee"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox name='juice' checked={juice[0]} onChange={(e) => this.handleChange(e, 'drink')} value="juice" />
-              }
-              label="Juice"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  name='cocktail'
-                  checked={cocktail[0]}
-                  onChange={(e) => this.handleChange(e, 'drink')}
-                  value="cocktail"
-                />
-              }
-              label="Cocktail"
-            />
-          </FormGroup>
-          <FormHelperText>Select at least one</FormHelperText>
-        </FormControl>
-        <FormControl required error={durationError} component="fieldset" className={classes.formControl}>
-          <FormLabel component="legend">Select Meeting Duration</FormLabel>
-          <FormGroup>
-            <FormControlLabel
-              control={
-                <Checkbox name='twentyMin' checked={twentyMin[0]} onChange={(e) => this.handleChange(e, 'duration')} value='20' />
-              }
-              label="TwentyMin"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox name='sixtyMin' checked={sixtyMin[0]} onChange={(e) => this.handleChange(e, 'duration')} value='60' />
-              }
-              label="SixtyMin"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  name='oneTwentyMin'
-                  checked={oneTwentyMin[0]}
-                  onChange={(e) => this.handleChange(e, 'duration')}
-                  value='120'
-                />
-              }
-              label="oneTwentyMin"
-            />
-          </FormGroup>
-          <FormHelperText>Select at least one</FormHelperText>
-        </FormControl>
+        <Beverages 
+          juice={juice}
+          coffee={coffee}
+          classes={classes}
+          cocktail={cocktail}
+          drinkError={drinkError}
+          handleChange={this.handleChange}
+        />
+        <MeetingDuration 
+          classes={classes}
+          sixtyMin={sixtyMin}
+          twentyMin={twentyMin}
+          oneTwentyMin={oneTwentyMin}
+          durationError={durationError}
+          handleChange={this.handleChange}
+        />
         <Grid item lg={12}>
           <Button type='submit' className={classes.formControl}>Next</Button>
         </Grid>
@@ -126,9 +90,5 @@ class BeveragesAndMeetingDuration extends React.Component {
     );
   }
 }
-
-BeveragesAndMeetingDuration.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
 
 export default withStyles(styles)(BeveragesAndMeetingDuration);

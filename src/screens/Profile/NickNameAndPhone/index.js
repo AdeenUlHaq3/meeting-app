@@ -1,9 +1,11 @@
 import React from 'react';
-import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
-import NickNameAndPhoneTextFields from './components/textfields/NickNameAndPhone';
+
+//Import Components
+import ValidatorForm from '../components/forms/ValidatorForm';
+import NickNameAndPhoneTextFields from '../components/textfields/NickNameAndPhone';
 
 // JSS
 const styles = theme => ({
@@ -63,21 +65,24 @@ class NickNameAndPhone extends React.Component {
         } = this.props;
 
         return (
-            <NickNameAndPhoneTextFields
+            <ValidatorForm
                 classes={classes}
-                nickName={nickName}
-                phoneNo={phoneNo}
-                handleChange={this.handleChange}
                 handleSubmit={this.handleSubmit}
             >
+                <NickNameAndPhoneTextFields
+                    classes={classes}
+                    nickName={nickName}
+                    phoneNo={phoneNo}
+                    handleChange={this.handleChange}
+                />
                 <Button
                     type='submit'
                     variant="contained"
                     className={classes.button}
                 >
-                Next
+                    Next
                 </Button>
-            </NickNameAndPhoneTextFields>
+            </ValidatorForm>
         )
     }
 }

@@ -74,10 +74,16 @@ class App extends Component {
 
   componentDidMount() {
     if (localStorage.getItem('activeUId')) {
+      const {
+        pathname
+      } = this.props.history.location;
+
       this.setState({
         isUser: true
       });
-      this.props.history.push('/dashboard');
+
+      if(pathname === '/')
+        this.props.history.push('/dashboard');
     }
   };
 

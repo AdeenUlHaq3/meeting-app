@@ -133,6 +133,10 @@ class PrimaryAppBar extends React.Component {
 
   redirectToEditProfile = () => {
     this.props.history.push('/editProfile');
+    this.setState({
+      anchorEl: null,
+      mobileMoreAnchorEl: null
+    });
   };
 
   render() {
