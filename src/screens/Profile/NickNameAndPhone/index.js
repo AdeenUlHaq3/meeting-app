@@ -3,6 +3,7 @@ import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
+import NickNameAndPhoneTextFields from './components/textfields/NickNameAndPhone';
 
 // JSS
 const styles = theme => ({
@@ -25,13 +26,9 @@ const styles = theme => ({
 });
 
 class NickNameAndPhone extends React.Component {
-    constructor() {
-        super();
-
-        this.state = {
-            nickName: '',
-            phoneNo: ''
-        };
+    state = {
+        nickName: '',
+        phoneNo: ''
     };
 
     handleChange = (e) => {
@@ -52,7 +49,7 @@ class NickNameAndPhone extends React.Component {
             state
         } = this.props.location;
 
-        this.props.history.push('/profile/chooseImages', {...state, nickName, phoneNo});
+        this.props.history.push('/profile/chooseImages', { ...state, nickName, phoneNo });
     };
 
     render() {
@@ -66,46 +63,27 @@ class NickNameAndPhone extends React.Component {
         } = this.props;
 
         return (
-            <ValidatorForm
-                className={classes.form}
-                ref="form"
-                onSubmit={this.handleSubmit}
-                onError={errors => console.log(errors)}
+            <NickNameAndPhoneTextFields
+                classes={classes}
+                nickName={nickName}
+                phoneNo={phoneNo}
+                handleChange={this.handleChange}
+                handleSubmit={this.handleSubmit}
             >
-                <TextValidator
-                    label="Nick Name"
-                    name="nickName"
-                    className={classes.textField}
-                    onChange={this.handleChange}
-                    value={nickName}
-                    validators={['matchRegexp:[a-z,A-Z]{1}', 'required']}
-                    errorMessages={['Type Mismatch']}
-                    margin='normal'
-                />
-                <TextValidator
-                    label="Phone No."
-                    name="phoneNo"
-                    className={classes.textField}
-                    onChange={this.handleChange}
-                    value={phoneNo}
-                    validators={['matchRegexp:[0]{1}[3]{1}[0-9]{2}[-]{1}[0-9]{7}', 'required']}
-                    errorMessages={['Type Mismatch']}
-                    margin='normal'
-                />
                 <Button
                     type='submit'
                     variant="contained"
                     className={classes.button}
                 >
-                    Next
+                Next
                 </Button>
-            </ValidatorForm>
+            </NickNameAndPhoneTextFields>
         )
     }
 }
 
 const mapStateToProps = (state) => {
-    return{
+    return {
         nickName: state.nickNameAndPhoneReducer.nickName,
         phone: state.nickNameAndPhoneReducer.phone
     };

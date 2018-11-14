@@ -8,6 +8,7 @@ import SelectLocation from '../screens/Profile/SelectLocation';
 import DashBoard from '../screens/DashBoard';
 import RecommendedPeoples from '../screens/RecommendedPeoples';
 import Notifications from '../screens/Notifications';
+import EditProfile from '../screens/Profile/EditProfile';
 // import Steps from '../screens/Profile';
 
 export default (props) => {
@@ -27,7 +28,8 @@ export default (props) => {
             <Route path='/profile/selectLocation' component={SelectLocation} />
             <Route path='/dashboard' component={DashBoard} />
             <Route path='/recommendedPeoples' component={RecommendedPeoples} />
-            <Route path='/notifications'  render={(props) => <Notifications {...props} Notifications={{ notifications }} />} />
+            <Route path='/notifications' render={(props) => <Notifications {...props} Notifications={{ notifications }} />} />
+            <Route path='/editProfile' component={EditProfile} />
             {/* <Route path='/' component={Steps} /> */}
         </div>
     );

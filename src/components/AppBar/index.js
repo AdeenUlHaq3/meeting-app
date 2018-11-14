@@ -100,13 +100,13 @@ class PrimaryAppBar extends React.Component {
     this.setState({ anchorEl: event.currentTarget });
   };
 
-  handleMenuClose = (action) => {
+  handleLogout = (action) => {
     const {
       logOut
     } = this.props.AppBar;
 
     this.setState({ anchorEl: null });
-    this.handleMobileMenuClose();
+    this.handleMobileLogout();
    
     if (action === 'logout')
       logOut();
@@ -116,7 +116,7 @@ class PrimaryAppBar extends React.Component {
     this.setState({ mobileMoreAnchorEl: event.currentTarget });
   };
 
-  handleMobileMenuClose = (action) => {
+  handleMobileLogout = (action) => {
     const {
       logOut
     } = this.props.AppBar;
@@ -131,12 +131,22 @@ class PrimaryAppBar extends React.Component {
     this.props.history.push('/notifications');
   };
 
+  redirectToEditProfile = () => {
+    this.props.history.push('/editProfile');
+  };
+
   render() {
-    const { anchorEl, mobileMoreAnchorEl } = this.state;
     const { classes } = this.props;
+
+    const { 
+      anchorEl, 
+      mobileMoreAnchorEl
+     } = this.state;
+
     const {
       notifications
     } = this.props.AppBar;
+
     const {
       isUser,
       activeUser
@@ -150,11 +160,10 @@ class PrimaryAppBar extends React.Component {
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         open={isMenuOpen}
-        onClose={this.handleMenuClose}
+        onClose={this.handleLogout}
       >
-        <MenuItem onClick={this.handleMenuClose}>Profile</MenuItem>
-        <MenuItem onClick={this.handleMenuClose}>My account</MenuItem>
-        <MenuItem onClick={() => this.handleMenuClose('logout')}>Logout</MenuItem>
+        <MenuItem onClick={this.redirectToEditProfile}>Edit Profile</MenuItem>
+        <MenuItem onClick={() => this.handleLogout('logout')}>Logout</MenuItem>
       </Menu>
     );
 
@@ -164,7 +173,7 @@ class PrimaryAppBar extends React.Component {
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         open={isMobileMenuOpen}
-        onClose={this.handleMobileMenuClose}
+        onClose={this.handleMobileLogout}
       >
         <MenuItem>
           <IconButton color="inherit">
