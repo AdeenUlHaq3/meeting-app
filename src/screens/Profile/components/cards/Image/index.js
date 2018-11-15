@@ -23,7 +23,8 @@ const ImageCard = (props) => {
     const {
         url,
         title,
-        classes
+        classes,
+        handleChange
     } = props;
     
     return (
@@ -36,7 +37,7 @@ const ImageCard = (props) => {
                     title={title}
                 />
                 <CardActions>
-                    <input type='file' />
+                    <input type='file' onChange={handleChange} />
                 </CardActions>
             </CardActionArea>
         </Card>

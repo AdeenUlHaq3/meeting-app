@@ -1,26 +1,7 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps";
 import firebase from '../../../config/Firebase';
-
-const MyMapComponent = withScriptjs(withGoogleMap((props) =>
-    <GoogleMap
-        defaultZoom={14}
-        center={{ lat: props.coords.latitude, lng: props.coords.longitude }}
-    >
-        {
-            props.isMarkerShown
-            &&
-            <Marker
-                position={{ lat: props.coords.latitude, lng: props.coords.longitude }}
-                draggable={true}
-                onDragEnd={position => {
-                    props.updateCoords({ latitude: position.latLng.lat(), longitude: position.latLng.lng() })
-                }}
-            />
-        }
-    </GoogleMap>
-))
+import GoogleMap from '../components/maps/GoogleMap';
 
 class SelectLocation extends React.Component {
     state = {
@@ -44,7 +25,7 @@ class SelectLocation extends React.Component {
 
     updateCoords = ({ latitude, longitude }) => {
         this.setState({ coords: { latitude, longitude } })
-    }
+    };
 
     handleSubmit = e => {
         e.preventDefault();
@@ -69,7 +50,7 @@ class SelectLocation extends React.Component {
             coords
             &&
             <form onSubmit={this.handleSubmit}>
-                <MyMapComponent
+                <GoogleMap
                     coords={coords}
                     updateCoords={this.updateCoords}
                     isMarkerShown
