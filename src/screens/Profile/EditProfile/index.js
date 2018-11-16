@@ -149,7 +149,32 @@ class EditProfile extends React.Component {
     };
 
     handleSubmit = () => {
+        const {
+            nickName,
+            phoneNo,
+            coords,
+            images,
+            drinks,
+            durations
+        } = this.state;
+
+        const Fdrinks = [], Fdurations = [], Fimages = [];
         
+        for(let drink in drinks)
+            if(drinks[drink][0])
+                Fdrinks.push(drinks[drink][1]);
+        
+        for(let duration in durations)
+            if(durations[duration][0])
+                Fdurations.push(durations[duration][1]);
+        
+        this.setState({
+            nickName,
+            phoneNo,
+            coords,
+            Fdrinks,
+            Fdurations,
+        });
     };
 
     handleImageChange = (e, url) => {
@@ -180,6 +205,7 @@ class EditProfile extends React.Component {
 
         const drinkError = Object.values(this.state.drinks).filter(v => v[2] === 'drink' && v[0]).length <= 0;
         const durationError = Object.values(this.state.durations).filter(v => v[2] === 'duration' && v[0]).length <= 0;
+        console.log(this.state);
         
         return (
             <ValidatorForm
@@ -221,9 +247,9 @@ class EditProfile extends React.Component {
                         />
                     </Grid>
                 </Grid>
-                <Grid 
+                <Grid
                     container
-                    className={classes.marginBottom} 
+                    className={classes.marginBottom}
                 >
                     <Grid
                         item
@@ -266,8 +292,8 @@ class EditProfile extends React.Component {
                         mapElement={<div style={{ height: `100%` }} />}
                     />
                 }
-                <Button 
-                    className={classes.updateButton} 
+                <Button
+                    className={classes.updateButton}
                     type='submit'
                 >
                     Update

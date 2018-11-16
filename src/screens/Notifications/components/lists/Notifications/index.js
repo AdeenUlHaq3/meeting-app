@@ -23,7 +23,7 @@ const NotificationsList = (props) => {
   } = props;
 
   return (
-    <div className={classes.root}>
+    <div key={`${notification.date} | ${notification.time}`} className={classes.root}>
       <List>
         <ListItem onClick={() => showDialog(notification)}>
           <img src={notification.displayPic} alt='displayPic' />
