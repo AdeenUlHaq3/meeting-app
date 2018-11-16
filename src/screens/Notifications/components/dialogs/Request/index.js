@@ -14,10 +14,13 @@ import moment from 'moment';
 const styles = {
     avatar: {
         borderRadius: '50%',
-        width: '70px',
+        width: '25%',
         height: '70px',
-        display: 'inline',
         float: 'left'
+    },
+    margin: {
+        marginTop: '10px',
+        marginLeft: '35%',
     },
     center: {
         textAlign: 'center'
@@ -55,8 +58,8 @@ class RequestDialog extends React.Component {
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description"
                 >
-                    <img className={classes.avatar} src={request.displayPic} alt='Avatar' />
-                    <img className={classes.avatar} src={request.displayPic} alt='Avatar' />
+                    <div className={classes.margin}><img className={classes.avatar} src={request.displayPic} alt='Avatar' />
+                    <img className={classes.avatar} src={request.displayPic} alt='Avatar' /></div>
                     <DialogContent className={classes.center}>
                     <Typography 
                         variant='h6'

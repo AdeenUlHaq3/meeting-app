@@ -24,13 +24,13 @@ const MeetingDuration = (props) => {
             <FormGroup>
                 <FormControlLabel
                     control={
-                        <Checkbox name='twentyMin' checked={twentyMin[0]} onChange={(e) => handleChange(e, 'duration')} value='20' />
+                        <Checkbox name='twentyMin' checked={twentyMin[0]} onChange={(e) => handleChange(e, 'duration')} value={20} />
                     }
                     label="TwentyMin"
                 />
                 <FormControlLabel
                     control={
-                        <Checkbox name='sixtyMin' checked={sixtyMin[0]} onChange={(e) => handleChange(e, 'duration')} value='60' />
+                        <Checkbox name='sixtyMin' checked={sixtyMin[0]} onChange={(e) => handleChange(e, 'duration')} value={60} />
                     }
                     label="SixtyMin"
                 />
@@ -40,7 +40,7 @@ const MeetingDuration = (props) => {
                             name='oneTwentyMin'
                             checked={oneTwentyMin[0]}
                             onChange={(e) => handleChange(e, 'duration')}
-                            value='120'
+                            value={120}
                         />
                     }
                     label="oneTwentyMin"

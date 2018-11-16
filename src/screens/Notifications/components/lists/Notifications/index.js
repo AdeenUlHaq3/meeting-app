@@ -28,7 +28,7 @@ const NotificationsList = (props) => {
         <ListItem onClick={() => showDialog(notification)}>
           <img src={notification.displayPic} alt='displayPic' />
           <ListItemText primary={`${notification.displayName} (${notification.nickName}) wants to meet you at 
-          ${notification.venue}, ${notification.address}`} secondary={`On ${moment(new Date(`${notification.date}`)).calendar()} at sharp ${notification.time}`} />
+          ${notification.venue}, ${notification.address}`} secondary={moment(`${notification.notificationDate} ${notification.notificationTime}`, "MM/DD/YYYY HH:mm:ss a").fromNow()} />
         </ListItem>
       </List>
     </div>

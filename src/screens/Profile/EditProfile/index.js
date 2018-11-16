@@ -67,7 +67,8 @@ class EditProfile extends React.Component {
             sixtyMin: [false, '', 'duration'],
             oneTwentyMin: [false, '', 'duration']
         },
-        coords: null
+        coords: null,
+        images: []
     };
 
     componentDidMount = () => {
@@ -92,7 +93,8 @@ class EditProfile extends React.Component {
                     coords: {
                         latitude,
                         longitude
-                    }
+                    },
+                    images
                 });
 
                 drinks.map(drink => {
@@ -108,16 +110,10 @@ class EditProfile extends React.Component {
                     const durationInWords = duration === 20 ? 'twentyMin' : duration === 60 ? 'sixtyMin' : 'oneTwentyMin';
 
                     durations[durationInWords][0] = true;
-                    durations[durationInWords][1] = durationInWords;
+                    durations[durationInWords][1] = duration;
 
                     return this.setState({ durations })
                 });
-
-                images.map((userImage, index) =>
-                    this.setState({
-                        [`url${index + 1}`]: userImage
-                    })
-                );
             });
     }
 
@@ -138,10 +134,10 @@ class EditProfile extends React.Component {
         } = this.state;
 
         if (type === 'drink')
-            drinks[e.target.name] = [e.target.checked, e.target.value, type];
+            drinks[e.target.name] = [e.target.checked, parseInt(e.target.value), type];
         else
-            durations[e.target.name] = [e.target.checked, e.target.value, type];
-
+            durations[e.target.name] = [e.target.checked, parseInt(e.target.value), type];
+        
         this.setState({
             drinks,
             durations
@@ -158,30 +154,56 @@ class EditProfile extends React.Component {
             durations
         } = this.state;
 
-        const Fdrinks = [], Fdurations = [], Fimages = [];
-        
-        for(let drink in drinks)
-            if(drinks[drink][0])
+        const Fdrinks = [], Fdurations = [];
+        var storage = firebase.storage();
+
+        for (let drink in drinks)
+            if (drinks[drink][0])
                 Fdrinks.push(drinks[drink][1]);
-        
-        for(let duration in durations)
-            if(durations[duration][0])
+
+        for (let duration in durations)
+            if (durations[duration][0])
                 Fdurations.push(durations[duration][1]);
-        
-        this.setState({
-            nickName,
-            phoneNo,
-            coords,
-            Fdrinks,
-            Fdurations,
+
+        images.map((image, index) => {
+            if (image.indexOf('http') === 0) {
+                if(index === 2)
+                    this.updateUser(nickName, phoneNo, Fdrinks, Fdurations, images, coords.latitude, coords.longitude);
+                return 0;
+            }
+            else
+                return storage.ref(`images/${new Date().getTime()}`).putString(image, 'data_url')
+                    .then(snapshot => {
+                        return snapshot.ref.getDownloadURL();
+                    })
+                    .then(downloadURL => {
+                        images[index] = downloadURL;
+                        if (index === 2)
+                            this.updateUser(nickName, phoneNo, Fdrinks, Fdurations, images, coords.latitude, coords.longitude);
+                });
         });
     };
 
-    handleImageChange = (e, url) => {
+    updateUser = (nickName, phoneNo, drinks, duration, images, latitude, longitude) => {
+        firebase.database().ref(`Users/${localStorage.getItem('activeUId')}`)
+            .update({
+                nickName,
+                phoneNo,
+                latitude,
+                longitude,
+                images,
+                drinks,
+                duration
+            });
+    };
+
+    handleImageChange = (e, index) => {
         if (e.target.files && e.target.files[0]) {
-            let reader = new FileReader();
+            const { images } = this.state;
+            const reader = new FileReader();
             reader.onload = (e) => {
-                this.setState({ [url]: e.target.result });
+                images[index] = e.target.result;
+                this.setState({ images });
             };
             reader.readAsDataURL(e.target.files[0]);
         }
@@ -189,11 +211,9 @@ class EditProfile extends React.Component {
 
     render() {
         const {
-            url1,
-            url2,
-            url3,
             phoneNo,
             nickName,
+            images,
             drinks,
             durations,
             coords
@@ -205,7 +225,6 @@ class EditProfile extends React.Component {
 
         const drinkError = Object.values(this.state.drinks).filter(v => v[2] === 'drink' && v[0]).length <= 0;
         const durationError = Object.values(this.state.durations).filter(v => v[2] === 'duration' && v[0]).length <= 0;
-        console.log(this.state);
         
         return (
             <ValidatorForm
@@ -228,22 +247,22 @@ class EditProfile extends React.Component {
                     <Grid>
                         <ImageCard
                             title='Image 1'
-                            url={url1}
-                            handleChange={(e) => this.handleImageChange(e, 'url1')}
+                            url={images[0]}
+                            handleChange={(e) => this.handleImageChange(e, 0)}
                         />
                     </Grid>
                     <Grid>
                         <ImageCard
                             title='Image 2'
-                            url={url2}
-                            handleChange={(e) => this.handleImageChange(e, 'url2')}
+                            url={images[1]}
+                            handleChange={(e) => this.handleImageChange(e, 1)}
                         />
                     </Grid>
                     <Grid>
                         <ImageCard
                             title='Image 3'
-                            url={url3}
-                            handleChange={(e) => this.handleImageChange(e, 'url3')}
+                            url={images[2]}
+                            handleChange={(e) => this.handleImageChange(e, 2)}
                         />
                     </Grid>
                 </Grid>
