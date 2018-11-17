@@ -17,6 +17,9 @@ import Beverages from '../components/checkboxes/Beverages';
 import MeetingDuration from '../components/checkboxes/MeetingDuration';
 import GoogleMap from '../components/maps/GoogleMap';
 
+//Import SweetAlert
+import swal from 'sweetalert';
+
 const styles = theme => ({
     textField: {
         width: '100%',
@@ -194,7 +197,10 @@ class EditProfile extends React.Component {
                 images,
                 drinks,
                 duration
-            });
+            })
+            .then(() => {
+                swal('Updated', 'Your profile has been updated');
+            })
     };
 
     handleImageChange = (e, index) => {

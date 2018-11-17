@@ -53,7 +53,7 @@ class DateAndTimeDialog extends React.Component {
                     requestDate: new Date().toLocaleDateString(),
                     requestTime: new Date().toLocaleTimeString()
                 });
-
+                
                 firebase.database().ref(`Users/${localStorage.getItem('activeUId')}`)
                     .update({
                         meetings
@@ -68,9 +68,11 @@ class DateAndTimeDialog extends React.Component {
                                     time,
                                     status,
                                     ...selectedPlace,
-                                    nickName,
-                                    displayName,
-                                    displayPic,
+                                    nickName: localStorage.getItem('myNickName'),
+                                    requestedUId: localStorage.getItem('activeUId'),
+                                    requestedUserMeetingIndex: notifications.length,
+                                    displayName: localStorage.getItem('myDisplayName'),
+                                    displayPic: localStorage.getItem('myDisplayPic'),
                                     notificationDate: new Date().toLocaleDateString(),
                                     notificationTime: new Date().toLocaleTimeString()
                                 });

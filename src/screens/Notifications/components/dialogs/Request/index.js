@@ -18,6 +18,9 @@ const styles = {
         height: '70px',
         float: 'left'
     },
+    secondImg: {
+        
+    },
     margin: {
         marginTop: '10px',
         marginLeft: '35%',
@@ -44,10 +47,20 @@ class RequestDialog extends React.Component {
         const {
             open,
             close,
-            request,
+            confirm,
             classes,
             fullScreen
         } = this.props;
+
+        const {
+            displayName, 
+            displayPic,
+            date,
+            time,
+            address,
+            requestedUId,
+            requestedUserMeetingIndex
+        } = this.props.request;
         
         return (
             <div>
@@ -58,14 +71,16 @@ class RequestDialog extends React.Component {
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description"
                 >
-                    <div className={classes.margin}><img className={classes.avatar} src={request.displayPic} alt='Avatar' />
-                    <img className={classes.avatar} src={request.displayPic} alt='Avatar' /></div>
+                    <div className={classes.margin}>
+                        <img className={classes.avatar} src={localStorage.getItem('myDisplayPic')} alt='Avatar' />
+                        <img className={classes.avatar} src={displayPic} alt='Avatar' />
+                    </div>
                     <DialogContent className={classes.center}>
                     <Typography 
                         variant='h6'
                         className={classes.name}
                     >
-                        {request.displayName}
+                        {displayName}
                     </Typography>
                     <DialogContentText>
                         <LocationOn className={classes.inline} />
@@ -73,23 +88,23 @@ class RequestDialog extends React.Component {
                             className={classes.inline} 
                             variant='subtitle2' 
                         >
-                            {request.address}
+                            {address}
                         </Typography>  
                         <Typography
                             variant='caption'
                         >
-                            Date: {request.date}<br/>
-                            Time: {request.time}<br/>
-                            {moment(request.date).fromNow()}
+                            Date: {date}<br/>
+                            Time: {time}<br/>
+                            {moment(date).fromNow()}
                         </Typography>
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                            <Button className={classes.button} onClick={() => close(false)}>
-                            Cancel
+                            <Button className={classes.button} onClick={close}>
+                                Cancel
                             </Button>
-                            <Button className={classes.button} onClick={() => close(true)} autoFocus>
-                            Confirm
+                            <Button className={classes.button} onClick={() => confirm(requestedUId, requestedUserMeetingIndex)} autoFocus>
+                                Confirm
                             </Button>
                         </DialogActions>
                 </Dialog>

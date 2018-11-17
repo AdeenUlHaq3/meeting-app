@@ -13,7 +13,8 @@ function handleLogin(history, activeUser) {
         firebase.database().ref(`Users/${myUId}`)
         .once('value', snapshot => {
             activeUser();
-            console.log(result.user.photoURL);
+            localStorage.setItem('myDisplayPic', result.user.photoURL);
+            localStorage.setItem('myDisplayName', result.user.displayName);
             
             if (snapshot.val())
                 return history.push('/dashboard');

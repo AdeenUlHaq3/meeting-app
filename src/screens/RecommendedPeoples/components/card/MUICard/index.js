@@ -15,6 +15,9 @@ const styles = {
     textCenter: {
         textAlign: 'center'
     },
+    border: {
+        border: '1px solid #ccc'
+    }
 };
 
 class MuiCard extends React.Component {
@@ -46,8 +49,9 @@ class MuiCard extends React.Component {
                 <Grid container
                     direction="row"
                     justify="center"
-                    alignItems="center">
-
+                    alignItems="center"
+                    className={classes.border}
+                >
                     <Grid item xs={2}>
                         <IconButton
                             aria-label="Add to favorites"

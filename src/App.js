@@ -54,7 +54,8 @@ const theme = createMuiTheme({
 class App extends Component {
   state = {
     isUser: false,
-    notifications: []
+    notifications: [],
+    pendingNotifications: 0
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -63,12 +64,16 @@ class App extends Component {
         firebase.database().ref(`Users/${localStorage.getItem('activeUId')}`)
           .once('value', snapshot => {
 
-            const notifications = snapshot.val().notifications || [];
+            if (snapshot.val()) {
+              const notifications = snapshot.val().notifications || [];
 
-            this.setState({
-              notifications
-            });
+              const pendingNotifications = notifications.filter(notification => notification.status === 'pending' && notification)
 
+              this.setState({
+                notifications,
+                pendingNotifications: pendingNotifications.length || 0
+              });
+            }
           });
   };
 
@@ -82,7 +87,7 @@ class App extends Component {
         isUser: true
       });
 
-      if(pathname === '/')
+      if (pathname === '/')
         this.props.history.push('/dashboard');
     }
   };
@@ -99,7 +104,7 @@ class App extends Component {
         this.setState({
           isUser: false
         });
-        
+
         localStorage.removeItem('activeUId');
         this.props.history.push('/');
       });
@@ -108,14 +113,15 @@ class App extends Component {
   render() {
     const {
       isUser,
-      notifications
+      notifications,
+      pendingNotifications
     } = this.state;
 
     return (
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <MuiThemeProvider theme={theme}>
-            <Routes Routes={{ isUser, notifications, activeUser: this.activeUser, logOut: this.logOut }} />
+            <Routes Routes={{ isUser, notifications, pendingNotifications, activeUser: this.activeUser, logOut: this.logOut }} />
           </MuiThemeProvider>
         </PersistGate>
       </Provider>

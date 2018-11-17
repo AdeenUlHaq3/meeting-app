@@ -5,7 +5,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import GeoFire from 'geofire';
 import { withStyles } from '@material-ui/core/styles';
 import axios from 'axios';
-import MuiCard from './component/card/MUICard';
+import MuiCard from '../../card/MUICard';
 
 //Import Constants
 import { BASE_URL, CLIENT_ID, CLIENT_SECRET, VERSION } from '../../../../../constants/FourSquare';

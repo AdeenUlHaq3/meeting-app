@@ -15,20 +15,21 @@ export default (props) => {
     const {
         isUser,
         notifications,
+        pendingNotifications,
         activeUser,
         logOut
     } = props.Routes;
-
+    
     return (
         <div>
-            <Route render={(props) => <AppBar {...props} AppBar={{ isUser, notifications, activeUser, logOut }} />} />
+            <Route render={(props) => <AppBar {...props} AppBar={{ isUser, notifications, pendingNotifications, activeUser, logOut }} />} />
             <Route path='/profile/nickNameAndPhone' component={NickNameAndPhone} />
             <Route path='/profile/chooseImages' component={ChooseImages} />
             <Route path='/profile/beveragesAndMeetingDuration' component={BeveragesAndMeetingDuration} />
             <Route path='/profile/selectLocation' component={SelectLocation} />
             <Route path='/dashboard' component={DashBoard} />
             <Route path='/recommendedPeoples' component={RecommendedPeoples} />
-            <Route path='/notifications' render={(props) => <Notifications {...props} Notifications={{ notifications }} />} />
+            <Route path='/notifications' render={(props) => <Notifications {...props} notifications={notifications} />} />
             <Route path='/editProfile' component={EditProfile} />
             {/* <Route path='/' component={Steps} /> */}
         </div>

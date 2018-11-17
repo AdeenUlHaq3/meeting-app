@@ -33,38 +33,40 @@ class DashBoard extends React.Component {
 
     componentDidMount() {
         const activeUser = localStorage.getItem('activeUId');
-        
+
         firebase.database().ref(`Users/${activeUser}`)
-        .once('value', user => {
-            if (user.val().meetings) {
-                const meetingsList = user.val().meetings;
-                const { meetings } = this.state;
+            .once('value', user => {
+                if (user.val()) {
+                    if (user.val().meetings) {
+                        const meetingsList = user.val().meetings;
+                        const { meetings } = this.state;
 
-                    meetingsList.forEach(meeting => {
-                        switch(meeting.status) {
-                            case 'accepted':
-                                meetings.accepted.push(meeting);
-                                break;
-                            case 'cancelled':
-                                meetings.cancelled.push(meeting);
-                                break;
-                            case 'complicated':
-                                meetings.complicated.push(meeting);
-                                break;
-                            case 'done':
-                                meetings.done.push(meeting);
-                                break;
-                            case 'pending':
-                                meetings.pending.push(meeting);
-                                break;
-                            default:
-                                break;
-                        };
-                    });
+                        meetingsList.forEach(meeting => {
+                            switch (meeting.status) {
+                                case 'accepted':
+                                    meetings.accepted.push(meeting);
+                                    break;
+                                case 'cancelled':
+                                    meetings.cancelled.push(meeting);
+                                    break;
+                                case 'complicated':
+                                    meetings.complicated.push(meeting);
+                                    break;
+                                case 'done':
+                                    meetings.done.push(meeting);
+                                    break;
+                                case 'pending':
+                                    meetings.pending.push(meeting);
+                                    break;
+                                default:
+                                    break;
+                            };
+                        });
 
-                    this.setState({
-                        meetings
-                    });
+                        this.setState({
+                            meetings
+                        });
+                    };
                 };
 
                 this.setState({
@@ -86,12 +88,12 @@ class DashBoard extends React.Component {
             meetings,
             isLoading
         } = this.state;
-        
+
         return (
             <div>
                 <MeetingsStatus
-                        Loading={isLoading}
-                        lists={meetings}
+                    Loading={isLoading}
+                    lists={meetings}
                 />
                 <Button
                     variant="fab"

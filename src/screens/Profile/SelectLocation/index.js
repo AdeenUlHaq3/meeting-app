@@ -36,7 +36,12 @@ class SelectLocation extends React.Component {
             {...this.props.location.state, ...this.state.coords, notification: []}
         )
         .then(() => {
+            const {
+                nickName
+            } = this.props.location.state;
+
             this.props.history.push('/dashboard');
+            localStorage.setItem('myNickName', nickName);
         })
         
     }

@@ -105,8 +105,7 @@ class PrimaryAppBar extends React.Component {
       logOut
     } = this.props.AppBar;
 
-    this.setState({ anchorEl: null });
-    this.handleMobileLogout();
+    this.closeMenu();
    
     if (action === 'logout')
       logOut();
@@ -121,7 +120,7 @@ class PrimaryAppBar extends React.Component {
       logOut
     } = this.props.AppBar;
 
-    this.setState({ mobileMoreAnchorEl: null });
+    this.closeMenu();
     
     if (action === 'logout')
       logOut();
@@ -133,10 +132,19 @@ class PrimaryAppBar extends React.Component {
 
   redirectToEditProfile = () => {
     this.props.history.push('/editProfile');
+    this.closeMenu();
+  };
+
+  closeMenu = () => {
     this.setState({
       anchorEl: null,
       mobileMoreAnchorEl: null
     });
+  };
+
+  redirectToDashBoard = () => {
+    this.props.history.push('/dashboard');
+    this.closeMenu();
   };
 
   render() {
@@ -148,16 +156,16 @@ class PrimaryAppBar extends React.Component {
      } = this.state;
 
     const {
-      notifications
+      pendingNotifications
     } = this.props.AppBar;
-
+    
     const {
       isUser,
       activeUser
     } = this.props.AppBar;
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
+    
     const renderMenu = (
       <Menu
         anchorEl={anchorEl}
@@ -166,6 +174,7 @@ class PrimaryAppBar extends React.Component {
         open={isMenuOpen}
         onClose={this.handleLogout}
       >
+        <MenuItem onClick={this.redirectToDashBoard}>Dashboard</MenuItem>
         <MenuItem onClick={this.redirectToEditProfile}>Edit Profile</MenuItem>
         <MenuItem onClick={() => this.handleLogout('logout')}>Logout</MenuItem>
       </Menu>
@@ -189,7 +198,7 @@ class PrimaryAppBar extends React.Component {
         </MenuItem>
         <MenuItem>
           <IconButton color="inherit">
-            <Badge className={classes.margin} badgeContent={notifications.length} color="secondary">
+            <Badge className={classes.margin} badgeContent={pendingNotifications} color="secondary">
               <NotificationsIcon />
             </Badge>
           </IconButton>
@@ -237,7 +246,7 @@ class PrimaryAppBar extends React.Component {
                     </Badge>
                   </IconButton>
                   <IconButton onClick={this.redirectToNotifications} color="inherit">
-                    <Badge className={classes.margin} badgeContent={notifications.length} color="secondary">
+                    <Badge className={classes.margin} badgeContent={pendingNotifications} color="secondary">
                       <NotificationsIcon />
                     </Badge>
                   </IconButton>

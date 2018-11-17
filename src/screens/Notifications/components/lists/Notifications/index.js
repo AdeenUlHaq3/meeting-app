@@ -19,16 +19,17 @@ const NotificationsList = (props) => {
   
   const {
     showDialog,
-    notification
+    notification,
+    notificationIndex
   } = props;
 
   return (
     <div key={`${notification.date} | ${notification.time}`} className={classes.root}>
       <List>
-        <ListItem onClick={() => showDialog(notification)}>
+        <ListItem onClick={() => showDialog(notification, notificationIndex)}>
           <img src={notification.displayPic} alt='displayPic' />
           <ListItemText primary={`${notification.displayName} (${notification.nickName}) wants to meet you at 
-          ${notification.venue}, ${notification.address}`} secondary={moment(`${notification.notificationDate} ${notification.notificationTime}`, "MM/DD/YYYY HH:mm:ss a").fromNow()} />
+          ${notification.venue}, ${notification.address}`} secondary={`${moment(`${notification.notificationDate} ${notification.notificationTime}`, "MM/DD/YYYY HH:mm:ss a").fromNow()} ${notification.status === 'accepted' ? notification.status : ''}`} />
         </ListItem>
       </List>
     </div>
