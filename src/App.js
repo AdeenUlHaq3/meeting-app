@@ -61,17 +61,22 @@ class App extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (this.state.isUser)
       if (prevState.isUser !== this.state.isUser)
-        firebase.database().ref(`Users/${localStorage.getItem('activeUId')}`)
-          .once('value', snapshot => {
+        firebase.database().ref(`Users/${localStorage.getItem('activeUId')}/notifications`)
+          .on('child_added', snapshot => {
+            const notification = snapshot.val();
 
-            if (snapshot.val()) {
-              const notifications = snapshot.val().notifications || [];
+            if (notification) {
+              let {
+                notifications,
+                pendingNotifications
+              } = this.state;
 
-              const pendingNotifications = notifications.filter(notification => notification.status === 'pending' && notification)
+              notifications.push(notification);
+              pendingNotifications++;
 
               this.setState({
                 notifications,
-                pendingNotifications: pendingNotifications.length || 0
+                pendingNotifications
               });
             }
           });

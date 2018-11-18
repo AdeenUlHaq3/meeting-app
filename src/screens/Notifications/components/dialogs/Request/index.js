@@ -19,7 +19,7 @@ const styles = {
         float: 'left'
     },
     secondImg: {
-        
+
     },
     margin: {
         marginTop: '10px',
@@ -53,15 +53,17 @@ class RequestDialog extends React.Component {
         } = this.props;
 
         const {
-            displayName, 
+            displayName,
             displayPic,
             date,
             time,
             address,
             requestedUId,
-            requestedUserMeetingIndex
+            requestedUserMeetingIndex,
+            venue
         } = this.props.request;
         
+
         return (
             <div>
                 <Dialog
@@ -76,37 +78,43 @@ class RequestDialog extends React.Component {
                         <img className={classes.avatar} src={displayPic} alt='Avatar' />
                     </div>
                     <DialogContent className={classes.center}>
-                    <Typography 
-                        variant='h6'
-                        className={classes.name}
-                    >
-                        {displayName}
-                    </Typography>
-                    <DialogContentText>
-                        <LocationOn className={classes.inline} />
-                        <Typography 
-                            className={classes.inline} 
-                            variant='subtitle2' 
-                        >
-                            {address}
-                        </Typography>  
                         <Typography
-                            variant='caption'
+                            variant='h6'
+                            className={classes.name}
                         >
-                            Date: {date}<br/>
-                            Time: {time}<br/>
-                            {moment(date).fromNow()}
+                            {displayName}
                         </Typography>
+                        <DialogContentText>
+                            <Typography
+                                className={classes.inline}
+                                variant='subtitle2'
+                            >
+                                {venue}
+                            </Typography>
+                            <LocationOn className={classes.inline} />
+                            <Typography
+                                className={classes.inline}
+                                variant='subtitle2'
+                            >
+                                {address}
+                            </Typography>
+                            <Typography
+                                variant='caption'
+                            >
+                                Date: {date}<br />
+                                Time: {time}<br />
+                                {moment(date).fromNow()}
+                            </Typography>
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                            <Button className={classes.button} onClick={close}>
-                                Cancel
+                        <Button className={classes.button} onClick={close}>
+                            Cancel
                             </Button>
-                            <Button className={classes.button} onClick={() => confirm(requestedUId, requestedUserMeetingIndex)} autoFocus>
-                                Confirm
+                        <Button className={classes.button} onClick={() => confirm(requestedUId, requestedUserMeetingIndex)} autoFocus>
+                            Confirm
                             </Button>
-                        </DialogActions>
+                    </DialogActions>
                 </Dialog>
             </div>
         );

@@ -102,8 +102,11 @@ const Meetings = (props) => {
     </Typography>
     :
     list.length ?
-    list.map(item =>
-      <div className={classes.root}>
+    list.map((item, index) =>
+      <div 
+        key={index}
+        className={classes.root}
+      >
         <ExpansionPanel>
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
             <img src={item.displayPic} className={classes.round} alt='Fb Pic' />&nbsp;

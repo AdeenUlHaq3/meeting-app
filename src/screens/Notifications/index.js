@@ -13,7 +13,7 @@ import { withStyles } from '@material-ui/core/styles';
 import swal from 'sweetalert';
 
 //Import AddToCalenderButton
-import AddToCalender from 'react-add-to-calendar';
+import AddToCalenderDialog from './components/dialogs/AddToCalender';
 
 const styles = {
     textCenter: {
@@ -23,7 +23,7 @@ const styles = {
 
 class Notifications extends React.Component {
     state = {
-        isEventButtonDialog: true,
+        isEventButtonDialog: false,
         isDialog: false
     };
 
@@ -59,10 +59,12 @@ class Notifications extends React.Component {
             });
 
             this.closeDialog();
-            this.setState({
-                isEventButtonDialog: true
-            });
+            this.setState({ isEventButtonDialog: true });
         })        
+    };
+
+    closeEventButtonDialog = () => {
+        this.setState({ isEventButtonDialog: false });
     };
 
     render() {
@@ -82,8 +84,16 @@ class Notifications extends React.Component {
             <div>
                 {
                     isEventButtonDialog &&
-                    <AddToCalender 
-                        event={event} 
+                    <AddToCalenderDialog 
+                        open={isEventButtonDialog}
+                        close={this.closeEventButtonDialog}
+                        event={{
+                            title: 'Sample Event',
+                            description: 'This is the sample event provided as an example only',
+                            location: 'Portland, OR',
+                            startTime: '2016-09-16T20:15:00-04:00',
+                            endTime: '2016-09-16T21:45:00-04:00'
+                        }} 
                         listItems={[
                             { outlookcom: 'Outlook' },
                             { yahoo: 'Yahoo' },
@@ -103,6 +113,7 @@ class Notifications extends React.Component {
                     :
                     notifications.map((notification, index) => 
                         <NotificationsList
+                            key={index}
                             notification={notification}
                             notificationIndex={index}
                             showDialog={this.showDialog}
