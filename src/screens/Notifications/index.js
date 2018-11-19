@@ -28,7 +28,7 @@ class Notifications extends React.Component {
     };
 
     showDialog = (notification, notificationIndex) => {
-        if(notification.status === 'accepted')
+        if (notification.status === 'accepted')
             return swal('Accepted Request', 'This request is accepted');
         this.setState({
             isDialog: true,
@@ -49,18 +49,25 @@ class Notifications extends React.Component {
         } = this.state;
 
         firebase.database().ref(`Users/${localStorage.getItem('activeUId')}/notifications/${notificationIndex}`)
-        .update({
-            status: 'accepted'
-        })
-        .then(() => {
-            firebase.database().ref(`Users/${requestedUId}/meetings/${requestedUserMeetingIndex}`)
             .update({
                 status: 'accepted'
+            })
+            .then(() => {
+                firebase.database().ref(`Users/${requestedUId}/meetings/${requestedUserMeetingIndex}`)
+                    .update({
+                        status: 'accepted'
+                    })
+                    // .then(() => {
+                    //     firebase.database().ref(`Users/${requestedUId}/notifications`)
+                    //         .set({
+                                
+                    //         })
+                    //         .then(() => {
+                    //             this.closeDialog();
+                    //             this.setState({ isEventButtonDialog: true });
+                    //         });
+                    // });
             });
-
-            this.closeDialog();
-            this.setState({ isEventButtonDialog: true });
-        })        
     };
 
     closeEventButtonDialog = () => {
@@ -69,7 +76,6 @@ class Notifications extends React.Component {
 
     render() {
         const {
-            event,
             isDialog,
             isEventButtonDialog,
             notification,
@@ -84,7 +90,7 @@ class Notifications extends React.Component {
             <div>
                 {
                     isEventButtonDialog &&
-                    <AddToCalenderDialog 
+                    <AddToCalenderDialog
                         open={isEventButtonDialog}
                         close={this.closeEventButtonDialog}
                         event={{
@@ -93,7 +99,7 @@ class Notifications extends React.Component {
                             location: 'Portland, OR',
                             startTime: '2016-09-16T20:15:00-04:00',
                             endTime: '2016-09-16T21:45:00-04:00'
-                        }} 
+                        }}
                         listItems={[
                             { outlookcom: 'Outlook' },
                             { yahoo: 'Yahoo' },
@@ -102,27 +108,27 @@ class Notifications extends React.Component {
                     />
                 }
                 {
-                    notifications.length === 0 
-                    ? 
-                    <Typography 
-                        variant='h5'
-                        className={classes.textCenter}
-                    >
-                        No Notifications Yet
-                    </Typography> 
-                    :
-                    notifications.map((notification, index) => 
-                        <NotificationsList
-                            key={index}
-                            notification={notification}
-                            notificationIndex={index}
-                            showDialog={this.showDialog}
-                        />
-                    )
+                    notifications.length === 0
+                        ?
+                        <Typography
+                            variant='h5'
+                            className={classes.textCenter}
+                        >
+                            No Notifications Yet
+                    </Typography>
+                        :
+                        notifications.map((notification, index) =>
+                            <NotificationsList
+                                key={index}
+                                notification={notification}
+                                notificationIndex={index}
+                                showDialog={this.showDialog}
+                            />
+                        )
                 }
                 {
-                    isDialog && 
-                    <RequestDialog 
+                    isDialog &&
+                    <RequestDialog
                         open={isDialog}
                         close={this.closeDialog}
                         confirm={this.acceptRequest}
