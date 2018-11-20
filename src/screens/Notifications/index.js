@@ -22,10 +22,16 @@ const styles = {
 };
 
 class Notifications extends React.Component {
-    state = {
-        isEventButtonDialog: false,
+    constructor() {
+        super();
+        
+        this.state = {
+            isEventButtonDialog: false,
         isDialog: false
-    };
+        };
+
+        this.acceptRequest = this.acceptRequest.bind(this);
+    }
 
     showDialog = (notification, notificationIndex) => {
         if (notification.status === 'accepted')
@@ -43,31 +49,19 @@ class Notifications extends React.Component {
         });
     };
 
-    acceptRequest = (requestedUId, requestedUserMeetingIndex) => {
+    async acceptRequest(requestedUId, requestedUserMeetingIndex) {
         const {
             notificationIndex
         } = this.state;
 
-        firebase.database().ref(`Users/${localStorage.getItem('activeUId')}/notifications/${notificationIndex}`)
-            .update({
-                status: 'accepted'
-            })
-            .then(() => {
-                firebase.database().ref(`Users/${requestedUId}/meetings/${requestedUserMeetingIndex}`)
-                    .update({
-                        status: 'accepted'
-                    })
-                    // .then(() => {
-                    //     firebase.database().ref(`Users/${requestedUId}/notifications`)
-                    //         .set({
-                                
-                    //         })
-                    //         .then(() => {
-                    //             this.closeDialog();
-                    //             this.setState({ isEventButtonDialog: true });
-                    //         });
-                    // });
-            });
+        await firebase.database().ref(`Users/${localStorage.getItem('activeUId')}/notifications/${notificationIndex}`).update({ status: 'accepted' });
+        await firebase.database().ref(`Users/${requestedUId}/meetings/${requestedUserMeetingIndex}`).update({ status: 'accepted' });
+        this.closeDialog();
+        this.setState({ isEventButtonDialog: true });
+        // firebase.database().ref(`Users/${requestedUId}/notifications`)
+        //     .set({
+
+        //     })
     };
 
     closeEventButtonDialog = () => {
