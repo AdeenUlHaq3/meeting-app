@@ -72,7 +72,7 @@ class App extends Component {
               } = this.state;
 
               notifications.push(notification);
-              pendingNotifications++;
+              notification.status === 'pending' && pendingNotifications++;
 
               this.setState({
                 notifications,

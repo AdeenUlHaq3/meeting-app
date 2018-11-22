@@ -49,19 +49,33 @@ class Notifications extends React.Component {
         });
     };
 
-    async acceptRequest(requestedUId, requestedUserMeetingIndex) {
+    async acceptRequest(request) {
         const {
             notificationIndex
         } = this.state;
 
         await firebase.database().ref(`Users/${localStorage.getItem('activeUId')}/notifications/${notificationIndex}`).update({ status: 'accepted' });
-        await firebase.database().ref(`Users/${requestedUId}/meetings/${requestedUserMeetingIndex}`).update({ status: 'accepted' });
+        await firebase.database().ref(`Users/${request.requestedUId}/meetings/${request.requestedUserMeetingIndex}`).update({ status: 'accepted' });
         this.closeDialog();
         this.setState({ isEventButtonDialog: true });
-        // firebase.database().ref(`Users/${requestedUId}/notifications`)
-        //     .set({
+        await firebase.database().ref(`Users/${request.requestedUId}/notifications`).once('value', snapshot => {
+            const notifications = snapshot.val() || [];
+            
+            notifications.push({
+                displayName: localStorage.getItem('myDisplayName'),
+                displayPic: localStorage.getItem('myDisplayPic'),
+                latitude: request.latitude,
+                longitude: request.longitude,
+                meetingDate: request.date,
+                meetingTime: request.time,
+                venue: request.venue,
+                address: request.address,
+                date: new Date().toLocaleDateString(),
+                time: new Date().toLocaleTimeString()
+            });
 
-        //     })
+            await firebase.database().ref(`Users/${request.requestedUId}/notifications`).update({ notifications });
+        });
     };
 
     closeEventButtonDialog = () => {

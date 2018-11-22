@@ -49,7 +49,8 @@ class RequestDialog extends React.Component {
             close,
             confirm,
             classes,
-            fullScreen
+            fullScreen,
+            request
         } = this.props;
 
         const {
@@ -58,8 +59,6 @@ class RequestDialog extends React.Component {
             date,
             time,
             address,
-            requestedUId,
-            requestedUserMeetingIndex,
             venue
         } = this.props.request;
         
@@ -111,7 +110,7 @@ class RequestDialog extends React.Component {
                         <Button className={classes.button} onClick={close}>
                             Cancel
                             </Button>
-                        <Button className={classes.button} onClick={() => confirm(requestedUId, requestedUserMeetingIndex)} autoFocus>
+                        <Button className={classes.button} onClick={() => confirm(request)} autoFocus>
                             Confirm
                             </Button>
                     </DialogActions>
